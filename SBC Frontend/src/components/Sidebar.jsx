@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-  width: 20%;
-  background-color: #f5f5f5;
+  width: 18%;
+  background-color: #fcf5f5;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -32,7 +32,7 @@ const GenreItem = styled.li`
   }
 `;
 
-const Genres = () => {
+const Sidebar = () => {
   const genres = ["Pop", "Rock", "Jazz", "Hip-Hop", "Classical", "Electronic"];
   const topMusic = ["Song A", "Song B", "Song C", "Song D"];
 
@@ -45,7 +45,7 @@ const Genres = () => {
         ))}
       </GenreList>
 
-      <SectionTitle>Top Music</SectionTitle>
+      <SectionTitle>Categories</SectionTitle>
       <GenreList>
         {topMusic.map((music, index) => (
           <GenreItem key={index}>{music}</GenreItem>
@@ -55,4 +55,4 @@ const Genres = () => {
   );
 };
 
-export default Genres;
+export default Sidebar;

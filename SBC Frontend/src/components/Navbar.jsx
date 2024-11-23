@@ -24,11 +24,7 @@ const Left = styled.div`
   align-items: center;
 `;
 
-const Language = styled.span`
-  font-size: 14px;
-  cursor: pointer;
- 
-`;
+
 
 const SearchContainer = styled.div`
   border: 0.5px solid lightgray;
@@ -74,14 +70,13 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-          <Language>EN</Language>
+        <Logo>Music App</Logo>
+        </Left>
+        <Center>
           <SearchContainer>
             <Input placeholder="Search" />
             <Search style={{ color: "gray", fontSize: 16 }} />
           </SearchContainer>
-        </Left>
-        <Center>
-          <Logo>SBC Music</Logo>
         </Center>
         <Right>
           <MenuItem>REGISTER</MenuItem>

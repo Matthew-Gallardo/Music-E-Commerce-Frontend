@@ -79,10 +79,12 @@ const ContactItem = styled.div`
   display: flex;
   align-items: center;
 `;
-
 const Payment = styled.img`
-    width: 50%;
+  margin-top: -20px;
+  width: 20%;  
+  height: auto;  
 `;
+
 
 const Footer = () => {
   return (
@@ -113,12 +115,10 @@ const Footer = () => {
         <List>
           <ListItem>Home</ListItem>
           <ListItem>Cart</ListItem>
-          <ListItem>Man Fashion</ListItem>
-          <ListItem>Woman Fashion</ListItem>
-          <ListItem>Accessories</ListItem>
+          <ListItem>Genres</ListItem>
+          <ListItem>Top Hits</ListItem>
           <ListItem>My Account</ListItem>
           <ListItem>Order Tracking</ListItem>
-          <ListItem>Wishlist</ListItem>
           <ListItem>Wishlist</ListItem>
           <ListItem>Terms</ListItem>
         </List>
@@ -126,15 +126,15 @@ const Footer = () => {
       <Right>
         <Title>Contact</Title>
         <ContactItem>
-          <Room style={{marginRight:"10px"}}/> 622 Dixie Path , South Tobinchester 98336
+          <Room style={{marginRight:"10px"}}/> Keyland Arnaiz Building, 849 Antonio Arnaiz Ave, Legazpi Village, Makati, Metro Manila
         </ContactItem>
         <ContactItem>
           <Phone style={{marginRight:"10px"}}/> +1 234 56 78
         </ContactItem>
         <ContactItem>
-          <MailOutline style={{marginRight:"10px"}} /> contact@lama.dev
+          <MailOutline style={{marginRight:"10px"}} /> MGallardo@securitybank.com.ph
         </ContactItem>
-        <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
+        <Payment src="https://res.cloudinary.com/do3op0083/image/upload/f_auto,q_auto/v1/SBC%20Capstone/stripe" />
       </Right>
     </Container>
   );

@@ -1,4 +1,4 @@
-import { Add, Remove } from "@material-ui/icons";
+import { Add, Remove } from "@mui/icons-material";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
@@ -10,7 +10,6 @@ const Container = styled.div``;
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
-
 `;
 
 const ImgContainer = styled.div`
@@ -21,17 +20,25 @@ const Image = styled.img`
   width: 100%;
   height: 90vh;
   object-fit: cover;
-
 `;
 
 const InfoContainer = styled.div`
   flex: 1;
   padding: 0px 50px;
-
 `;
 
 const Title = styled.h1`
   font-weight: 200;
+`;
+
+const Artist = styled.h2`
+  margin: 10px 0;
+  font-weight: 300;
+`;
+
+const Genre = styled.span`
+  font-size: 18px;
+  color: gray;
 `;
 
 const Desc = styled.p`
@@ -43,46 +50,26 @@ const Price = styled.span`
   font-size: 40px;
 `;
 
-const FilterContainer = styled.div`
-  width: 50%;
-  margin: 30px 0px;
-  display: flex;
-  justify-content: space-between;
-
+const TracksContainer = styled.div`
+  margin: 30px 0;
 `;
 
-const Filter = styled.div`
-  display: flex;
-  align-items: center;
+const TracksTitle = styled.h3`
+  font-weight: 500;
+  margin-bottom: 10px;
 `;
 
-const FilterTitle = styled.span`
-  font-size: 20px;
-  font-weight: 200;
+const Track = styled.div`
+  margin: 5px 0;
+  font-size: 16px;
 `;
-
-const FilterColor = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: ${(props) => props.color};
-  margin: 0px 5px;
-  cursor: pointer;
-`;
-
-const FilterSize = styled.select`
-  margin-left: 10px;
-  padding: 5px;
-`;
-
-const FilterSizeOption = styled.option``;
 
 const AddContainer = styled.div`
   width: 50%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  margin-top: 20px;
 `;
 
 const AmountContainer = styled.div`
@@ -109,8 +96,8 @@ const Button = styled.button`
   cursor: pointer;
   font-weight: 500;
 
-  &:hover{
-      background-color: #f8f4f4;
+  &:hover {
+    background-color: #f8f4f4;
   }
 `;
 
@@ -118,39 +105,29 @@ const Product = () => {
   return (
     <Container>
       <Navbar />
-      <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src="https://i.ibb.co/S6qMxwr/jean.jpg" />
+          <Image src="https://res.cloudinary.com/do3op0083/image/upload/v1732289023/SBC%20Capstone/Album%20Covers/kdot2.jpg" />
         </ImgContainer>
         <InfoContainer>
-          <Title>Denim Jumpsuit</Title>
-          <Desc>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-            venenatis, dolor in finibus malesuada, lectus ipsum porta nunc, at
-            iaculis arcu nisi sed mauris. Nulla fermentum vestibulum ex, eget
-            tristique tortor pretium ut. Curabitur elit justo, consequat id
-            condimentum ac, volutpat ornare.
-          </Desc>
-          <Price>$ 20</Price>
-          <FilterContainer>
-            <Filter>
-              <FilterTitle>Color</FilterTitle>
-              <FilterColor color="black" />
-              <FilterColor color="darkblue" />
-              <FilterColor color="gray" />
-            </Filter>
-            <Filter>
-              <FilterTitle>Size</FilterTitle>
-              <FilterSize>
-                <FilterSizeOption>XS</FilterSizeOption>
-                <FilterSizeOption>S</FilterSizeOption>
-                <FilterSizeOption>M</FilterSizeOption>
-                <FilterSizeOption>L</FilterSizeOption>
-                <FilterSizeOption>XL</FilterSizeOption>
-              </FilterSize>
-            </Filter>
-          </FilterContainer>
+          <Title>To Pimp the Butterfly</Title>
+          <Artist>Kendrick Lamar</Artist>
+          <Genre>Hip-Hop</Genre>
+          <Desc>Goated Hiphop Album</Desc>
+          <Price>₱300.99</Price>
+          <TracksContainer>
+            <TracksTitle>Tracks:</TracksTitle>
+            <Track>1. Wesley's Theory</Track>
+            <Track>2. For Free? (Interlude)</Track>
+            <Track>3. King Kunta</Track>
+            <Track>4. Institutionalized</Track>
+            <Track>5. These Walls</Track>
+            <Track>6. u</Track>
+            <Track>7. Alright</Track>
+            <Track>8. For Sale? (Interlude)</Track>
+            <Track>9. Momma</Track>
+            <Track>10. You Ain't Gotta Lie (Momma Said)</Track>
+          </TracksContainer>
           <AddContainer>
             <AmountContainer>
               <Remove />

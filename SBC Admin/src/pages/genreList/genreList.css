@@ -1,0 +1,31 @@
+.genreList{
+    flex: 4;
+}
+
+.genreListItem{
+    display: flex;
+    align-items: center;
+}
+
+.genreListImg {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+
+.genreListEdit{
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: #3bb077;
+    color: white;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.genreListDelete{
+    color: red;
+    cursor: pointer;
+}

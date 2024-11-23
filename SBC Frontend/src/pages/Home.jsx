@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Navbar from "../components/Navbar";
-import Genres from "../components/Genres"; 
+import Sidebar from "../components/Sidebar";
 import Products from "../components/Products"; 
 import Footer from "../components/Footer";
 
@@ -29,7 +29,7 @@ const Home = () => {
       <Announcement />
       <Navbar />
       <ContentWrapper>
-        <Genres /> 
+        <Sidebar /> 
         <MainContent>
           <Products /> 
         </MainContent>

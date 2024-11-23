@@ -1,0 +1,130 @@
+.genre {
+  flex: 4;
+  padding: 20px;
+}
+
+.genreTitleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.genreAddButton {
+  width: 80px;
+  border: none;
+  padding: 5px;
+  background-color: teal;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.genreTop {
+  display: flex;
+}
+
+.genreTopLeft,
+.genreTopRight {
+  flex: 1;
+}
+
+.genreTopRight {
+  padding: 20px;
+  margin: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.genreInfoImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.genreInfoTop {
+  display: flex;
+  align-items: center;
+}
+
+.genreName {
+  font-weight: 600;
+}
+
+.genreInfoBottom {
+  margin-top: 10px;
+}
+
+.genreInfoItem {
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.genreInfoValue {
+  font-weight: 300;
+}
+
+.genreBottom {
+  padding: 20px;
+  margin: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.genreForm {
+  display: flex;
+  justify-content: space-between;
+}
+
+.genreFormLeft {
+  display: flex;
+  flex-direction: column;
+}
+
+.genreFormLeft > label {
+  margin-bottom: 10px;
+  color: gray;
+}
+
+.genreFormLeft > input {
+  margin-bottom: 10px;
+  border: none;
+  padding: 5px;
+  border-bottom: 1px solid gray;
+}
+
+.genreFormLeft >select{
+  margin-bottom: 10px;
+}
+
+.genreUploadImg{
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.genreFormRight{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.genreUpload{
+  display: flex;
+  align-items: center;
+}
+
+.genreButton{
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: darkblue;
+  color:white;
+  font-weight: 600;
+  cursor: pointer;
+}

@@ -25,14 +25,15 @@ const Container = styled.div`
   flex: 1;
   margin: 5px;
   min-width: 280px;
-  height: 350px;
+  height: 400px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background-color: #f5fbfd;
   position: relative;
 
-  &:hover ${Info}{
+  &:hover ${Info} {
     opacity: 1;
   }
 `;
@@ -48,6 +49,21 @@ const Circle = styled.div`
 const Image = styled.img`
   height: 75%;
   z-index: 2;
+`;
+
+const TextContainer = styled.div`
+  text-align: center;
+  padding: 10px;
+`;
+
+const Title = styled.h3`
+  font-size: 18px;
+  color: #333;
+`;
+
+const Artist = styled.p`
+  font-size: 14px;
+  color: #777;
 `;
 
 const Icon = styled.div`
@@ -71,6 +87,10 @@ const Product = ({ item }) => {
     <Container>
       <Circle />
       <Image src={item.img} />
+      <TextContainer>
+        <Title>{item.title}</Title>
+        <Artist>{item.artist}</Artist>
+      </TextContainer>
       <Info>
         <Icon>
           <ShoppingCartOutlined />
