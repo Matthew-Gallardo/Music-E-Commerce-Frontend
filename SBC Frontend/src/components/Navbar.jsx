@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Badge, InputBase } from "@mui/material";
-import { Search, ShoppingCartOutlined } from "@mui/icons-material";
+import { AccountCircleOutlined, Search, ShoppingCartOutlined } from "@mui/icons-material";
 
 
 
@@ -85,7 +85,9 @@ const Navbar = () => {
             <Badge badgeContent={4} color="primary">
               <ShoppingCartOutlined />
             </Badge>
+            
           </MenuItem>
+          <MenuItem> <AccountCircleOutlined/> </MenuItem>
         </Right>
       </Wrapper>
     </Container>
