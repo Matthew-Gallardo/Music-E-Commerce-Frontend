@@ -2,7 +2,8 @@ import styled from "styled-components";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Announcement from "../components/Announcement";
-
+import { useState } from "react"; 
+import axios from 'axios'; // Import axios
 
 const Container = styled.div`
   width: 100vw;
@@ -16,7 +17,6 @@ const Wrapper = styled.div`
   width: 25%;
   padding: 20px;
   background-color: white;
- 
 `;
 
 const Title = styled.h1`
@@ -53,24 +53,57 @@ const Link = styled.a`
   cursor: pointer;
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 12px;
+  margin: 10px 0;
+`;
+
 const Login = () => {
+  const [error, setError] = useState(null);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    
+    const username = e.target.username.value;
+    const password = e.target.password.value;
+
+    setError(null);  
+
+    try {
+      const response = await axios.post('/musictest/user/login', { username, password });
+      if (response.status === 200) {
+        console.log("success!!!")
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setError("Invalid username or password");
+      } else {
+        setError("An error occurred. Please try again.");
+      }
+    }
+  };
+
   return (
     <>
-    <Navbar/>
-    <Announcement/>
-    <Container>
-      <Wrapper>
-        <Title>SIGN IN</Title>
-        <Form>
-          <Input placeholder="username" />
-          <Input placeholder="password" />
-          <Button>LOGIN</Button>
-          <Link>DO NOT YOU REMEMBER THE PASSWORD?</Link>
-          <Link>CREATE A NEW ACCOUNT</Link>
-        </Form>
-      </Wrapper>
-    </Container>
-    <Footer/>
+      <Navbar />
+      <Announcement />
+      <Container>
+        <Wrapper>
+          <Title>LOGIN</Title>
+          <Form onSubmit={handleLogin}>
+            <Input name="username" placeholder="Username" />
+            <Input name="password" type="password" placeholder="Password" />
+            <Button type="submit">LOGIN</Button>
+
+            {error && <ErrorMessage>{error}</ErrorMessage>}
+
+            <Link>FORGOT PASSWORD?</Link>
+            <Link>CREATE A NEW ACCOUNT</Link>
+          </Form>
+        </Wrapper>
+      </Container>
+      <Footer />
     </>
   );
 };

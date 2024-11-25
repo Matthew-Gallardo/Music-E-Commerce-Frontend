@@ -93,35 +93,65 @@ const Register = () => {
 
   return (
     <>
-    <Navbar/>
-    <Announcement/>
-    <Container>
-      <Wrapper>
-        <Title>CREATE AN ACCOUNT</Title>
-        <Form onSubmit={handleSubmit}>
-          <Input name="username" placeholder="username" onChange={handleChange} />
-          <Input name="email" placeholder="email" onChange={handleChange} />
-          <Input name="password" placeholder="password" type="password" onChange={handleChange} />
-          <Input name="confirmPassword" placeholder="confirm password" type="password" onChange={handleChange} />
-          <Select name="securityQuestion" onChange={handleChange}>
-            <Option disabled selected>
-              Select a security question
-            </Option>
-            <Option>What is your pet's name?</Option>
-            <Option>What is your mother's maiden name?</Option>
-            <Option>What was the name of your first school?</Option>
-            <Option>What is your favorite food?</Option>
-          </Select>
-          <Input name="securityAnswer" placeholder="Answer" onChange={handleChange} />
-          <Agreement>
-            By creating an account, I consent to the processing of my personal
-            data in accordance with the <b>PRIVACY POLICY</b>
-          </Agreement>
-          <Button type="submit">CREATE</Button>
-        </Form>
-      </Wrapper>
-    </Container>
-    <Footer/>
+      <Navbar />
+      <Announcement />
+      <Container>
+        <Wrapper>
+          <Title>CREATE AN ACCOUNT</Title>
+          <Form onSubmit={handleSubmit}>
+            <Input
+              name="username"
+              placeholder="username"
+              onChange={handleChange}
+            />
+            <Input name="email" placeholder="email" onChange={handleChange} />
+            <Input
+              name="password"
+              placeholder="password"
+              type="password"
+              onChange={handleChange}
+            />
+            <Input
+              name="confirmPassword"
+              placeholder="confirm password"
+              type="password"
+              onChange={handleChange}
+            />
+            <Select
+              name="securityQuestion"
+              value={form.securityQuestion}
+              onChange={handleChange}
+            >
+              <Option value="" disabled>
+                Select a security question
+              </Option>
+              <Option value="What is your pet's name?">
+                What is your pet's name?
+              </Option>
+              <Option value="What is your mother's maiden name?">
+                What is your mother's maiden name?
+              </Option>
+              <Option value="What was the name of your first school?">
+                What was the name of your first school?
+              </Option>
+              <Option value="What is your favorite food?">
+                What is your favorite food?
+              </Option>
+            </Select>
+            <Input
+              name="securityAnswer"
+              placeholder="Answer"
+              onChange={handleChange}
+            />
+            <Agreement>
+              By creating an account, I consent to the processing of my personal
+              data in accordance with the <b>PRIVACY POLICY</b>
+            </Agreement>
+            <Button type="submit">CREATE</Button>
+          </Form>
+        </Wrapper>
+      </Container>
+      <Footer />
     </>
   );
 };
