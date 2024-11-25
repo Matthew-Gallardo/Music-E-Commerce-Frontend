@@ -1,16 +1,12 @@
 import styled from "styled-components";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
+import Announcement from "../components/Announcement";
 
 
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(
-      rgba(255, 255, 255, 0.5),
-      rgba(255, 255, 255, 0.5)
-    ),
-    url("https://res.cloudinary.com/do3op0083/image/upload/v1732289023/SBC%20Capstone/Album%20Covers/kdot2.jpg")
-      center;
-  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,6 +55,9 @@ const Link = styled.a`
 
 const Login = () => {
   return (
+    <>
+    <Navbar/>
+    <Announcement/>
     <Container>
       <Wrapper>
         <Title>SIGN IN</Title>
@@ -71,6 +70,8 @@ const Login = () => {
         </Form>
       </Wrapper>
     </Container>
+    <Footer/>
+    </>
   );
 };
 

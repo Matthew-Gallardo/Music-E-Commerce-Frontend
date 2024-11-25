@@ -42,7 +42,7 @@ const ProductList = () => {
       <Title>Categories</Title>
       <FilterContainer>
         <Filter>
-          <FilterText>Filter Products:</FilterText>
+          <FilterText>Filter :</FilterText>
           <Select>
             <Option disabled selected>
               Genre
@@ -53,7 +53,7 @@ const ProductList = () => {
           </Select>
         </Filter>
         <Filter>
-          <FilterText>Sort Products:</FilterText>
+          <FilterText>Sort :</FilterText>
           <Select>
             <Option selected>Newest</Option>
             <Option>Price (asc)</Option>

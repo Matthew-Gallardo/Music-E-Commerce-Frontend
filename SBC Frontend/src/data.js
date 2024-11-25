@@ -60,3 +60,20 @@ export const popularProducts = [
     artist: "Kendrick Lamar",
   },
 ];
+
+export const sliderItems = [
+  {
+    id: 1,
+    img: "https://res.cloudinary.com/do3op0083/image/upload/v1732289023/SBC%20Capstone/Album%20Covers/kdot1.jpg",
+  },
+  {
+    id: 2,
+    img: "https://res.cloudinary.com/do3op0083/image/upload/v1732289023/SBC%20Capstone/Album%20Covers/kdot1.jpg",
+
+  },
+  {
+    id: 3,
+    img: "https://res.cloudinary.com/do3op0083/image/upload/v1732289023/SBC%20Capstone/Album%20Covers/kdot1.jpg",
+  },
+];
+

@@ -1,14 +1,13 @@
 import styled from "styled-components";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import Announcement from "../components/Announcement";
+import { useState } from "react";
+import axios from "axios";
 
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(
-      rgba(255, 255, 255, 0.5),
-      rgba(255, 255, 255, 0.5)
-    ),
-    url("https://res.cloudinary.com/do3op0083/image/upload/v1732289023/SBC%20Capstone/Album%20Covers/kdot2.jpg")
-      center;
   background-size: cover;
   display: flex;
   align-items: center;
@@ -64,16 +63,47 @@ const Button = styled.button`
 `;
 
 const Register = () => {
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    securityQuestion: "",
+    securityAnswer: "",
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/musictest/user/register", form);
+      if (response.data) {
+        alert("Registration successful");
+      } else {
+        alert("Registration failed");
+      }
+    } catch (err) {
+      console.error("Error during registration", err);
+      alert("An error occurred during registration");
+    }
+  };
+
   return (
+    <>
+    <Navbar/>
+    <Announcement/>
     <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
-        <Form>
-          <Input placeholder="username" />
-          <Input placeholder="email" />
-          <Input placeholder="password" />
-          <Input placeholder="confirm password" />
-          <Select>
+        <Form onSubmit={handleSubmit}>
+          <Input name="username" placeholder="username" onChange={handleChange} />
+          <Input name="email" placeholder="email" onChange={handleChange} />
+          <Input name="password" placeholder="password" type="password" onChange={handleChange} />
+          <Input name="confirmPassword" placeholder="confirm password" type="password" onChange={handleChange} />
+          <Select name="securityQuestion" onChange={handleChange}>
             <Option disabled selected>
               Select a security question
             </Option>
@@ -82,15 +112,17 @@ const Register = () => {
             <Option>What was the name of your first school?</Option>
             <Option>What is your favorite food?</Option>
           </Select>
-          <Input placeholder="Answer" />
+          <Input name="securityAnswer" placeholder="Answer" onChange={handleChange} />
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
           </Agreement>
-          <Button>CREATE</Button>
+          <Button type="submit">CREATE</Button>
         </Form>
       </Wrapper>
     </Container>
+    <Footer/>
+    </>
   );
 };
 

@@ -14,9 +14,6 @@ const Container = styled.div`
 const Wrapper = styled.div`
   width: 50%;
   padding: 20px;
-  background-color: #f9f9f9;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
 `;
 
 const Title = styled.h1`

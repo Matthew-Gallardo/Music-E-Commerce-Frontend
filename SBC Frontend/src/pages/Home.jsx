@@ -5,6 +5,9 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import Products from "../components/Products"; 
 import Footer from "../components/Footer";
+import Slider from "../components/Slider";
+
+
 
 const Container = styled.div`
   display: flex;
@@ -28,6 +31,7 @@ const Home = () => {
     <Container>
       <Announcement />
       <Navbar />
+      <Slider/>
       <ContentWrapper>
         <Sidebar /> 
         <MainContent>
