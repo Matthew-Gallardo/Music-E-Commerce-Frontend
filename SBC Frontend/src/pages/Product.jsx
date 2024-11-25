@@ -1,3 +1,4 @@
+import React from "react";
 import { Add, Remove } from "@mui/icons-material";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
@@ -62,6 +63,18 @@ const TracksTitle = styled.h3`
 const Track = styled.div`
   margin: 5px 0;
   font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const TrackName = styled.span`
+  flex: 1;
+`;
+
+const AudioPlayer = styled.audio`
+  flex: 1;
+  margin-left: 10px;
 `;
 
 const AddContainer = styled.div`
@@ -102,6 +115,19 @@ const Button = styled.button`
 `;
 
 const Product = () => {
+  const tracks = [
+    { name: "Wesley's Theory", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
+    { name: "For Free? (Interlude)", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
+    { name: "King Kunta", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb3" },
+    { name: "Institutionalized", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
+    { name: "These Walls", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
+    { name: "u", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
+    { name: "Alright", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
+    { name: "For Sale? (Interlude)", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
+    { name: "Momma", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
+    { name: "You Ain't Gotta Lie (Momma Said)", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
+  ];
+
   return (
     <Container>
       <Navbar />
@@ -117,16 +143,15 @@ const Product = () => {
           <Price>₱300.99</Price>
           <TracksContainer>
             <TracksTitle>Tracks:</TracksTitle>
-            <Track>1. Wesley's Theory</Track>
-            <Track>2. For Free? (Interlude)</Track>
-            <Track>3. King Kunta</Track>
-            <Track>4. Institutionalized</Track>
-            <Track>5. These Walls</Track>
-            <Track>6. u</Track>
-            <Track>7. Alright</Track>
-            <Track>8. For Sale? (Interlude)</Track>
-            <Track>9. Momma</Track>
-            <Track>10. You Ain't Gotta Lie (Momma Said)</Track>
+            {tracks.map((track, index) => (
+              <Track key={index}>
+                <TrackName>{`${index + 1}. ${track.name}`}</TrackName>
+                <AudioPlayer controls>
+                  <source src={track.audio} type="audio/mpeg" />
+                  Your browser does not support the audio element.
+                </AudioPlayer>
+              </Track>
+            ))}
           </TracksContainer>
           <AddContainer>
             <AmountContainer>
