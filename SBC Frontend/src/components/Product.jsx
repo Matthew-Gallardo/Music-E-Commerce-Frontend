@@ -1,3 +1,4 @@
+import React from "react";
 import {
   FavoriteBorderOutlined,
   SearchOutlined,
@@ -86,10 +87,10 @@ const Product = ({ item }) => {
   return (
     <Container>
       <Circle />
-      <Image src={item.img} />
+      <Image src={item.albumImage} />
       <TextContainer>
-        <Title>{item.title}</Title>
-        <Artist>{item.artist}</Artist>
+        <Title>{item.albumName}</Title>
+        <Artist>{item.artist.artistName}</Artist>
       </TextContainer>
       <Info>
         <Icon>
@@ -97,9 +98,6 @@ const Product = ({ item }) => {
         </Icon>
         <Icon>
           <SearchOutlined />
-        </Icon>
-        <Icon>
-          <FavoriteBorderOutlined />
         </Icon>
       </Info>
     </Container>

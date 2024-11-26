@@ -2,8 +2,8 @@ import styled from "styled-components";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Announcement from "../components/Announcement";
-import { useState } from "react"; 
-import axios from 'axios'; // Import axios
+import { useState } from "react";
+import axios from "axios"; 
 
 const Container = styled.div`
   width: 100vw;
@@ -64,16 +64,20 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     const username = e.target.username.value;
     const password = e.target.password.value;
 
-    setError(null);  
+    setError(null);
 
     try {
-      const response = await axios.post('/musictest/user/login', { username, password });
+      const response = await axios.post(
+        "/musictest/user/login", 
+        { username, password },
+        { withCredentials: true } 
+      );
       if (response.status === 200) {
-        console.log("success!!!")
+        console.log("success!!!");
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -83,7 +87,6 @@ const Login = () => {
       }
     }
   };
-
   return (
     <>
       <Navbar />

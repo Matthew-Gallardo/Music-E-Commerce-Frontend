@@ -31,7 +31,6 @@ const Home = () => {
     <Container>
       <Announcement />
       <Navbar />
-      <Slider/>
       <ContentWrapper>
         <Sidebar /> 
         <MainContent>
