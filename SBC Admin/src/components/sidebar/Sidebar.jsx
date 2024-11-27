@@ -61,7 +61,7 @@ export default function Sidebar() {
                 Genre
               </li>
             </Link>
-            <Link to="/products" className="link">
+            <Link to="/albums" className="link">
               <li className="sidebarListItem">
                 <AlbumOutlined className="sidebarIcon"/>
                 Albums

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import './Artist.css'; // Make sure to import the CSS file
+import './Artist.css'; 
 
 const Artist = () => {
   const { artistId } = useParams();

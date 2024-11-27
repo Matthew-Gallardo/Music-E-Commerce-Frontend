@@ -67,14 +67,20 @@ export default function GenreList() {
 
   return (
     <div className="genreList">
-      <DataGrid
-        rows={data}
-        getRowId={(row) => row.genreId}
-        disableSelectionOnClick
-        columns={columns}
-        pageSize={8}
-        checkboxSelection
-      />
+    <div className="genreListHeader">
+      <h1>Genres</h1>
+      <Link to="/newgenre">
+        <button className="genreAddButton">Create</button>
+      </Link>
     </div>
+    <DataGrid
+      rows={data}
+      getRowId={(row) => row.genreId}
+      disableSelectionOnClick
+      columns={columns}
+      pageSize={8}
+      checkboxSelection
+    />
+  </div>
   );
 }

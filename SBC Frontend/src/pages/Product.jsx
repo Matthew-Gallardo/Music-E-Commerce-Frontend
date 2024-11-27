@@ -123,7 +123,7 @@ const Product = () => {
   useEffect(() => {
     const fetchAlbum = async () => {
       try {
-        const response = await fetch(`/musictest/album/find/${id}`);
+        const response = await fetch(`/musictest/album/${id}`);
         const data = await response.json();
         setAlbum(data);
       } catch (error) {

@@ -1,13 +1,13 @@
-.productList{
+.trackList{
     flex: 4;
 }
 
-.productListItem{
+.trackListItem{
     display: flex;
     align-items: center;
 }
 
-.productListImg {
+.trackListImg {
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -15,7 +15,7 @@
     margin-right: 10px;
   }
 
-.productListEdit{
+.trackListEdit{
     border: none;
     border-radius: 10px;
     padding: 5px 10px;
@@ -25,7 +25,23 @@
     margin-right: 20px;
 }
 
-.productListDelete{
+.trackListDelete{
     color: red;
     cursor: pointer;
 }
+
+  
+.trackListHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+.trackAddButton {
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: #3bb077;
+    color: white;
+    cursor: pointer;
+  }

@@ -50,9 +50,6 @@ export default function Genre() {
     <div className="genre">
       <div className="genreTitleContainer">
         <h1 className="genreTitle">Genre</h1>
-        <Link to="/newgenre">
-          <button className="genreAddButton">Create</button>
-        </Link>
       </div>
       <div className="genreTop">
         <div className="genreTopRight">
