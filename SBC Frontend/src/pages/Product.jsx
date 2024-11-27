@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Add, Remove } from "@mui/icons-material";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
@@ -99,7 +100,7 @@ const Amount = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0px 5px;
+  margin: 0 5px;
 `;
 
 const Button = styled.button`
@@ -114,40 +115,49 @@ const Button = styled.button`
   }
 `;
 
+
 const Product = () => {
-  const tracks = [
-    { name: "Wesley's Theory", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
-    { name: "For Free? (Interlude)", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
-    { name: "King Kunta", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb3" },
-    { name: "Institutionalized", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
-    { name: "These Walls", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
-    { name: "u", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
-    { name: "Alright", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
-    { name: "For Sale? (Interlude)", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
-    { name: "Momma", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
-    { name: "You Ain't Gotta Lie (Momma Said)", audio: "https://res.cloudinary.com/do3op0083/video/upload/f_auto:video,q_auto/v1/SBC%20Capstone/songs/tfab/falelsxfbih0czyadnbb" },
-  ];
+  const { id } = useParams();
+  const [album, setAlbum] = useState(null);
+
+  useEffect(() => {
+    const fetchAlbum = async () => {
+      try {
+        const response = await fetch(`/musictest/album/find/${id}`);
+        const data = await response.json();
+        setAlbum(data);
+      } catch (error) {
+        console.error("Error fetching album:", error);
+      }
+    };
+
+    fetchAlbum();
+  }, [id]);
+
+  if (!album) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Container>
       <Navbar />
       <Wrapper>
         <ImgContainer>
-          <Image src="https://res.cloudinary.com/do3op0083/image/upload/v1732289023/SBC%20Capstone/Album%20Covers/kdot2.jpg" />
+          <Image src={album.albumImage} />
         </ImgContainer>
         <InfoContainer>
-          <Title>To Pimp the Butterfly</Title>
-          <Artist>Kendrick Lamar</Artist>
-          <Genre>Hip-Hop</Genre>
-          <Desc>Goated Hiphop Album</Desc>
-          <Price>₱300.99</Price>
+          <Title>{album.albumName}</Title>
+          <Artist>{album.artist.artistName}</Artist>
+          <Genre>{album.genre.genreName}</Genre>
+          <Desc>{album.albumDesc}</Desc>
+          <Price>₱{album.albumPrice}</Price>
           <TracksContainer>
             <TracksTitle>Tracks:</TracksTitle>
-            {tracks.map((track, index) => (
+            {album.tracks.map((track, index) => (
               <Track key={index}>
-                <TrackName>{`${index + 1}. ${track.name}`}</TrackName>
+                <TrackName>{`${index + 1}. ${track.trackName}`}</TrackName>
                 <AudioPlayer controls>
-                  <source src={track.audio} type="audio/mpeg" />
+                  <source src={track.trackMusic} type="audio/mpeg" />
                   Your browser does not support the audio element.
                 </AudioPlayer>
               </Track>

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   FavoriteBorderOutlined,
   SearchOutlined,
@@ -85,22 +86,24 @@ const Icon = styled.div`
 
 const Product = ({ item }) => {
   return (
-    <Container>
-      <Circle />
-      <Image src={item.albumImage} />
-      <TextContainer>
-        <Title>{item.albumName}</Title>
-        <Artist>{item.artist.artistName}</Artist>
-      </TextContainer>
-      <Info>
-        <Icon>
-          <ShoppingCartOutlined />
-        </Icon>
-        <Icon>
-          <SearchOutlined />
-        </Icon>
-      </Info>
-    </Container>
+    <Link to={`/product/${item.albumId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Container>
+        <Circle />
+        <Image src={item.albumImage} />
+        <TextContainer>
+          <Title>{item.albumName}</Title>
+          <Artist>{item.artist.artistName}</Artist>
+        </TextContainer>
+        <Info>
+          <Icon>
+            <ShoppingCartOutlined />
+          </Icon>
+          <Icon>
+            <SearchOutlined />
+          </Icon>
+        </Info>
+      </Container>
+    </Link>
   );
 };
 
