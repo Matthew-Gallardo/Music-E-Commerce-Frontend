@@ -1,9 +1,51 @@
 import { Link } from "react-router-dom";
 import "./genre.css";
-
 import { Publish } from "@mui/icons-material";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function Genre() {
+  const { genreId } = useParams();
+  const [genre, setGenre] = useState({});
+  const [genreName, setGenreName] = useState("");
+  const [genreDesc, setGenreDesc] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch(`/musictest/genre/${genreId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setGenre(data);
+        setGenreName(data.genreName);
+        setGenreDesc(data.genreDesc);
+      })
+      .catch((error) => console.error("Error fetching genre data:", error));
+  }, [genreId]);
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const updatedGenre = { genreName, genreDesc };
+
+    try {
+      const response = await fetch(`/musictest/genre/update/${genreId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedGenre),
+      });
+
+      if (response.ok) {
+        console.log("Genre updated successfully");
+        navigate("/genre");
+      } else {
+        console.error("Error updating genre");
+      }
+    } catch (error) {
+      console.error("Error updating genre:", error);
+    }
+  };
+
   return (
     <div className="genre">
       <div className="genreTitleContainer">
@@ -14,75 +56,39 @@ export default function Genre() {
       </div>
       <div className="genreTop">
         <div className="genreTopRight">
-          <div className="genreInfoTop">
-            <img
-              src="https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-              alt=""
-              className="genreInfoImg"
-            />
-            <span className="genreName">Apple Airpods</span>
-          </div>
+
           <div className="genreInfoBottom">
             <div className="genreInfoItem">
-              <span className="genreInfoKey">id:</span>
-              <span className="genreInfoValue">123</span>
+              <span className="genreInfoKey">ID:</span>
+              <span className="genreInfoValue">{genre.genreId}</span>
             </div>
             <div className="genreInfoItem">
-              <span className="genreInfoKey">desc:</span>
-              <span className="genreInfoValue">Goated album</span>
-            </div>
-            <div className="genreInfoItem">
-              <span className="genreInfoKey">genre:</span>
-              <span className="genreInfoValue">Hip-hop</span>
-            </div>
-            <div className="genreInfoItem">
-              <span className="genreInfoKey">sales:</span>
-              <span className="genreInfoValue">5123</span>
-            </div>
-            <div className="genreInfoItem">
-              <span className="genreInfoKey">active:</span>
-              <span className="genreInfoValue">Yes</span>
-            </div>
-            <div className="genreInfoItem">
-              <span className="genreInfoKey">in stock:</span>
-              <span className="genreInfoValue">No</span>
+              <span className="genreInfoKey">Description:</span>
+              <span className="genreInfoValue">{genre.genreDesc}</span>
             </div>
           </div>
         </div>
       </div>
       <div className="genreBottom">
-        <form className="genreForm">
+        <form className="genreForm" onSubmit={handleUpdate}>
           <div className="genreFormLeft">
             <label>Genre Name</label>
-            <input type="text" placeholder="Genre Name" />
-            <label>Desc</label>
-            <input type="text" placeholder="Description" />
-            <label>Genre</label>
-            <input type="text" placeholder="Genre" />
-            <label>In Stock</label>
-            <select name="inStock" id="idStock">
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
-            <label>Active</label>
-            <select name="active" id="active">
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
+            <input
+              type="text"
+              value={genreName}
+              onChange={(e) => setGenreName(e.target.value)}
+            />
+            <label>Genre Description</label>
+            <input
+              type="text"
+              value={genreDesc}
+              onChange={(e) => setGenreDesc(e.target.value)}
+            />
           </div>
           <div className="genreFormRight">
-            <div className="genreUpload">
-              <img
-                src="https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-                alt=""
-                className="genreUploadImg"
-              />
-              <label htmlFor="file">
-                <Publish />
-              </label>
-              <input type="file" id="file" style={{ display: "none" }} />
-            </div>
-            <button className="genreButton">Update</button>
+            <button className="genreButton" type="submit">
+              Update
+            </button>
           </div>
         </form>
       </div>

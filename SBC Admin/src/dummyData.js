@@ -316,3 +316,9 @@ export const userData = [
       genre: "Hip-Hop",
     },
   ];
+
+  export const artistRows = [
+    { artist_id: 1, artist_name: "Artist 1" },
+    { artist_id: 2, artist_name: "Artist 2" },
+    // Add more artist data here
+  ];

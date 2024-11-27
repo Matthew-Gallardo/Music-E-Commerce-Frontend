@@ -1,44 +1,50 @@
 import "./genreList.css";
 import { DataGrid } from '@mui/x-data-grid';
 import { DeleteOutline } from "@mui/icons-material";
-import { genreRows } from "../../dummyData";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function GenreList() {
-  const [data, setData] = useState(genreRows);
+  const [data, setData] = useState([]);
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+  useEffect(() => {
+    fetch("/musictest/genre/all")
+      .then((response) => response.json())
+      .then((data) => setData(data))
+      .catch((error) => console.error("Error fetching genre data:", error));
+  }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`/musictest/genre/delete/${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        setData(data.filter((item) => item.genreId !== id));
+        console.log("Genre deleted successfully");
+      } else {
+        console.error("Error deleting genre");
+      }
+    } catch (error) {
+      console.error("Error deleting genre:", error);
+    }
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "genreId", headerName: "ID", width: 90 },
     {
-      field: "genre",
-      headerName: "Genre",
+      field: "genreName",
+      headerName: "Genre Name",
       width: 200,
       renderCell: (params) => {
         return (
           <div className="genreListItem">
-            <img className="genreListImg" src={params.row.img} alt="" />
-            {params.row.name}
+            {params.row.genreName}
           </div>
         );
       },
     },
-    { field: "desc", headerName: "Description", width: 250 },
-    { field: "stock", headerName: "Stock", width: 200 },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 120,
-    },
-    {
-      field: "price",
-      headerName: "Price",
-      width: 160,
-    },
+    { field: "genreDesc", headerName: "Description", width: 250 },
     {
       field: "action",
       headerName: "Action",
@@ -46,12 +52,12 @@ export default function GenreList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/genre/" + params.row.id}>
+            <Link to={"/genre/" + params.row.genreId}>
               <button className="genreListEdit">Edit</button>
             </Link>
             <DeleteOutline
               className="genreListDelete"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete(params.row.genreId)}
             />
           </>
         );
@@ -63,6 +69,7 @@ export default function GenreList() {
     <div className="genreList">
       <DataGrid
         rows={data}
+        getRowId={(row) => row.genreId}
         disableSelectionOnClick
         columns={columns}
         pageSize={8}

@@ -12,6 +12,9 @@ import NewProduct from "./pages/newProduct/NewProduct";
 import Genre from "./pages/genre/Genre";
 import GenreList from "./pages/genreList/genreList";
 import NewGenre from "./pages/newGenre/NewGenre";
+import Artist from "./pages/artist/Artist";
+import ArtistList from "./pages/artistList/ArtistList";
+import NewArtist from "./pages/newArtist/newArtist";
 
 function App() {
   return (
@@ -30,7 +33,9 @@ function App() {
           <Route path="/genre" element={<GenreList />} />
           <Route path="/genre/:genreId" element={<Genre />} />
           <Route path="/newgenre" element={<NewGenre />} />
-         
+          <Route path="/artist/:artistId" element={<Artist />} />
+          <Route path="/artist" element={<ArtistList />} />
+          <Route path="/newartist" element={<NewArtist />} />
         </Routes>
       </div>
     </Router>

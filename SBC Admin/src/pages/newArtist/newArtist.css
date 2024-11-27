@@ -1,33 +1,33 @@
-.newGenre {
+.newArtist {
   flex: 4;
 }
 
-.addGenreForm {
+.addArtistForm {
   margin-top: 10px;
 }
 
-.addGenreItem {
+.addArtistItem {
   width: 250px;
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
 }
 
-.addGenreItem > label {
+.addArtistItem > label {
   color: gray;
   font-weight: 600;
   margin-bottom: 10px;
 }
 
-.addGenreItem > input {
+.addArtistItem > input {
   padding: 10px;
 }
 
-.addGenreItem > select {
+.addArtistItem > select {
   padding: 10px;
 }
 
-.addGenreButton {
+.addArtistButton {
   margin-top: 10px;
   padding: 7px 10px;
   border: none;
