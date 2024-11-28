@@ -1,35 +1,24 @@
-import { Add, Remove } from "@mui/icons-material";
-import styled from "styled-components";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 
-const Container = styled.div``;
-
-const Wrapper = styled.div`
+const Container = styled.div`
   padding: 20px;
-`;
-
-const Title = styled.h1`
-  font-weight: 300;
-  text-align: center;
 `;
 
 const Top = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
 `;
 
 const TopButton = styled.button`
   padding: 10px;
   font-weight: 600;
   cursor: pointer;
-  border: ${(props) => props.type === "filled" && "none"};
-  background-color: ${(props) =>
-    props.type === "filled" ? "black" : "transparent"};
-  color: ${(props) => props.type === "filled" && "white"};
+  border: ${(props) => (props.type === 'filled' ? 'none' : '1px solid black')};
+  background-color: ${(props) => (props.type === 'filled' ? 'black' : 'transparent')};
+  color: ${(props) => (props.type === 'filled' ? 'white' : 'black')};
 `;
 
 const TopTexts = styled.div``;
@@ -52,6 +41,7 @@ const Info = styled.div`
 const Product = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
 `;
 
 const ProductDetail = styled.div`
@@ -102,139 +92,109 @@ const ProductPrice = styled.div`
   font-weight: 200;
 `;
 
-const Hr = styled.hr`
-  background-color: #eee;
-  border: none;
-  height: 1px;
-`;
-
-const Summary = styled.div`
-  flex: 1;
-  border: 0.5px solid lightgray;
-  border-radius: 10px;
-  padding: 20px;
-  height: 50vh;
-`;
-
-const SummaryTitle = styled.h1`
-  font-weight: 200;
-`;
-
-const SummaryItem = styled.div`
-  margin: 30px 0px;
-  display: flex;
-  justify-content: space-between;
-  font-weight: ${(props) => props.type === "total" && "500"};
-  font-size: ${(props) => props.type === "total" && "24px"};
-`;
-
-const SummaryItemText = styled.span``;
-
-const SummaryItemPrice = styled.span``;
-
-const Button = styled.button`
-  width: 100%;
-  padding: 10px;
-  background-color: black;
-  color: white;
-  font-weight: 600;
-`;
-
 const Cart = () => {
+  const [cart, setCart] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    axios.get('/musictest/user/session', { withCredentials: true })
+      .then(response => {
+        const userId = response.data.userId;
+        console.log('User ID:', userId); // To check what is the user
+        return axios.get(`/musictest/api/carts/user/${userId}`, { withCredentials: true });
+      })
+      .then(response => {
+        setCart(response.data);
+        setCartItems(response.data.cartItems);
+        console.log('Cart ID:', response.data.cartId); // To check the log
+      })
+      .catch(error => {
+        console.error('There was an error fetching the cart!', error);
+      });
+  }, []);
+
+  const addItemToCart = (albumId, quantity) => {
+    axios.post('/musictest/api/cart-items', {
+      cart: { cartId: cart.cartId },
+      album: { albumId: albumId },
+      cartQuantity: quantity
+    }, { withCredentials: true })
+      .then(response => {
+        setCartItems([...cartItems, response.data]);
+        console.log('Added item to cart:', response.data); // Log the added item
+      })
+      .catch(error => {
+        console.error('There was an error adding the item to the cart!', error);
+      });
+  };
+
+  const updateCartItem = (cartItemId, quantity) => {
+    axios.put(`/musictest/api/cart-items/${cartItemId}`, {
+      cartQuantity: quantity
+    }, { withCredentials: true })
+      .then(response => {
+        setCartItems(cartItems.map(item => item.cartItemId === cartItemId ? response.data : item));
+        console.log('Updated cart item:', response.data); // Log the updated item
+      })
+      .catch(error => {
+        console.error('There was an error updating the cart item!', error);
+      });
+  };
+
+  const removeCartItem = (cartItemId) => {
+    axios.delete(`/musictest/api/cart-items/${cartItemId}`, { withCredentials: true })
+      .then(() => {
+        setCartItems(cartItems.filter(item => item.cartItemId !== cartItemId));
+        console.log('Removed cart item with ID:', cartItemId); // Log the removed item ID
+      })
+      .catch(error => {
+        console.error('There was an error removing the cart item!', error);
+      });
+  };
+
   return (
     <Container>
-      <Announcement />
-      <Wrapper>
-        <Title>YOUR BAG</Title>
-        <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
-          <TopTexts>
-            <TopText>Shopping Bag(2)</TopText>
-            <TopText>Your Wishlist (0)</TopText>
-          </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
-        </Top>
-        <Bottom>
-          <Info>
-            <Product>
+      <Top>
+        <TopTexts>
+          <TopText>Shopping Bag({cartItems.length})</TopText>
+          <TopText>Your Wishlist (0)</TopText>
+        </TopTexts>
+        <TopButton type="filled">CHECKOUT NOW</TopButton>
+      </Top>
+      <Bottom>
+        <Info>
+          {cartItems.map(item => (
+            <Product key={item.cartItemId}>
               <ProductDetail>
-                <Image src="https://res.cloudinary.com/do3op0083/image/upload/v1732288845/SBC%20Capstone/Album%20Covers/kanye2.jpg" />
+                <Image src={item.album.imageUrl} />
                 <Details>
                   <ProductName>
-                    <b>Title:</b> Jesus is King
+                    <b>Title:</b> {item.album.title}
                   </ProductName>
                   <ProductId>
-                    <b>ID:</b> 12345
+                    <b>ID:</b> {item.album.albumId}
                   </ProductId>
                   <ProductGenre>
-                    <b>Genre:</b> Hip-Hop
+                    <b>Genre:</b> {item.album.genre}
                   </ProductGenre>
                   <ProductTracks>
-                    <b>Tracks:</b> 10
+                    <b>Tracks:</b> {item.album.tracks}
                   </ProductTracks>
                 </Details>
               </ProductDetail>
               <PriceDetail>
                 <ProductAmountContainer>
-                  <Add />
-                  <ProductAmount>1</ProductAmount>
-                  <Remove />
+                  <button onClick={() => updateCartItem(item.cartItemId, item.cartQuantity + 1)}>+</button>
+                  <ProductAmount>{item.cartQuantity}</ProductAmount>
+                  <button onClick={() => updateCartItem(item.cartItemId, item.cartQuantity - 1)}>-</button>
                 </ProductAmountContainer>
-                <ProductPrice>₱100</ProductPrice>
+                <ProductPrice>$ {item.album.price * item.cartQuantity}</ProductPrice>
+                <button onClick={() => removeCartItem(item.cartItemId)}>Remove</button>
               </PriceDetail>
             </Product>
-            <Hr />
-            <Product>
-              <ProductDetail>
-                <Image src="https://res.cloudinary.com/do3op0083/image/upload/v1732288845/SBC%20Capstone/Album%20Covers/kanye1.jpg" />
-                <Details>
-                  <ProductName>
-                    <b>Title:</b> The College Dropout
-                  </ProductName>
-                  <ProductId>
-                    <b>ID:</b> 67890
-                  </ProductId>
-                  <ProductGenre>
-                    <b>Genre:</b> Jazz
-                  </ProductGenre>
-                  <ProductTracks>
-                    <b>Tracks:</b> 12
-                  </ProductTracks>
-                </Details>
-              </ProductDetail>
-              <PriceDetail>
-                <ProductAmountContainer>
-                  <Add />
-                  <ProductAmount>2</ProductAmount>
-                  <Remove />
-                </ProductAmountContainer>
-                <ProductPrice> ₱25</ProductPrice>
-              </PriceDetail>
-            </Product>
-          </Info>
-          <Summary>
-            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-            <SummaryItem>
-              <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>₱120</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>₱ 20.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>₱ -5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem type="total">
-              <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>₱ 40</SummaryItemPrice>
-            </SummaryItem>
-            <Button>CHECKOUT NOW</Button>
-          </Summary>
-        </Bottom>
-      </Wrapper>
-      <Footer />
+          ))}
+        </Info>
+      </Bottom>
     </Container>
   );
 };
