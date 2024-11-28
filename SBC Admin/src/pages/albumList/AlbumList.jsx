@@ -15,7 +15,18 @@ export default function AlbumList() {
   }, []);
 
   const handleDelete = (id) => {
-    setData(data.filter((item) => item.albumId !== id));
+    fetch(`/musictest/album/delete/${id}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (response.ok) {
+          setData(data.filter((item) => item.albumId !== id));
+          console.log("Album deleted successfully");
+        } else {
+          console.error(`Error deleting album: ${response.statusText}`);
+        }
+      })
+      .catch((error) => console.error("Error deleting album:", error));
   };
 
   const columns = [

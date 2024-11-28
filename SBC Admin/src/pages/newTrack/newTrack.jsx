@@ -1,42 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import './newAlbum.css';
+import './newTrack.css';
 
-export default function NewAlbum() {
-  const { albumId } = useParams();
+export default function NewTrack() {
   const [artists, setArtists] = useState([]);
-  const [genres, setGenres] = useState([]);
-  const [album, setAlbum] = useState({
-    albumName: '',
-    albumImage: '',
-    albumDesc: '',
-    albumPrice: '',
-    albumQty: '',
-    artistId: '',
-    genreId: ''
+  const [albums, setAlbums] = useState([]);
+  const [track, setTrack] = useState({
+    trackName: '',
+    trackMusic: '',
+    albumId: '',
+    artistId: ''
   });
 
   useEffect(() => {
-    const fetchArtistsAndGenres = async () => {
+    const fetchArtistsAndAlbums = async () => {
       try {
-        const [artistsResponse, genresResponse] = await Promise.all([
+        const [artistsResponse, albumsResponse] = await Promise.all([
           axios.get('/musictest/artist/all'),
-          axios.get('/musictest/genre/all')
+          axios.get('/musictest/album/all')
         ]);
         setArtists(artistsResponse.data);
-        setGenres(genresResponse.data);
+        setAlbums(albumsResponse.data);
       } catch (error) {
-        console.error('Error fetching artists or genres:', error);
+        console.error('Error fetching artists and albums:', error);
       }
     };
 
-    fetchArtistsAndGenres();
+    fetchArtistsAndAlbums();
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setAlbum(prevState => ({
+    setTrack(prevState => ({
       ...prevState,
       [name]: value
     }));
@@ -48,16 +43,16 @@ export default function NewAlbum() {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('upload_preset', 'sbcmusic'); 
-      formData.append('folder', 'sbcmusic/album/img'); 
+      formData.append('folder', 'sbcmusic/track/music'); 
 
       try {
-        const response = await axios.post('https://api.cloudinary.com/v1_1/do3op0083/image/upload', formData);
-        setAlbum(prevState => ({
+        const response = await axios.post('https://api.cloudinary.com/v1_1/do3op0083/video/upload', formData);
+        setTrack(prevState => ({
           ...prevState,
-          albumImage: response.data.secure_url
+          trackMusic: response.data.secure_url
         }));
       } catch (error) {
-        console.error('Error uploading image to Cloudinary:', error);
+        console.error('Error uploading music to Cloudinary:', error);
       }
     }
   };
@@ -65,14 +60,14 @@ export default function NewAlbum() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/musictest/album/add', album);
+      const response = await axios.post('/musictest/track/add', track);
       if (response.status === 200) {
-        alert('Album created successfully.');
+        alert('Track created successfully.');
       } else {
-        alert('Error creating album.');
+        alert('Error creating track.');
       }
     } catch (err) {
-      console.error('Error creating album', err);
+      console.error('Error creating track', err);
       if (err.response) {
         console.error('Response data:', err.response.data);
       }
@@ -82,44 +77,32 @@ export default function NewAlbum() {
 
   return (
     <div className="newProduct">
-      <h1 className="addProductTitle">New Album</h1>
+      <h1 className="addProductTitle">New Track</h1>
       <form className="addProductForm" onSubmit={handleSubmit}>
         <div className="addProductItem">
-          <label>Image</label>
-          <input type="file" id="file" onChange={handleFileChange} />
-          {album.albumImage && <img src={album.albumImage} alt="Album" className="productUploadImg" />}
-        </div>
-        <div className="addProductItem">
           <label>Name</label>
-          <input type="text" name="albumName" placeholder="Album Name" value={album.albumName} onChange={handleChange} />
+          <input type="text" name="trackName" placeholder="Track Name" value={track.trackName} onChange={handleChange} />
         </div>
         <div className="addProductItem">
-          <label>Desc</label>
-          <input type="text" name="albumDesc" placeholder="Album Description" value={album.albumDesc} onChange={handleChange} />
+          <label>Music</label>
+          <input type="file" id="file" accept="audio/*" onChange={handleFileChange} />
+          {track.trackMusic && <audio controls src={track.trackMusic} />}
         </div>
         <div className="addProductItem">
-          <label>Price</label>
-          <input type="number" name="albumPrice" placeholder="Album Price" value={album.albumPrice} onChange={handleChange} />
-        </div>
-        <div className="addProductItem">
-          <label>Quantity</label>
-          <input type="number" name="albumQty" placeholder="Album Quantity" value={album.albumQty} onChange={handleChange} />
-        </div>
-        <div className="addProductItem">
-          <label>Artist</label>
-          <select name="artistId" value={album.artistId} onChange={handleChange}>
-            <option value="">Select Artist</option>
-            {artists.map(artist => (
-              <option key={artist.artistId} value={artist.artistId}>{artist.artistName}</option>
+          <label>Album</label>
+          <select name="albumId" value={track.albumId} onChange={handleChange}>
+            <option value="">Select Album</option>
+            {albums.map(album => (
+              <option key={album.albumId} value={album.albumId}>{album.albumName}</option>
             ))}
           </select>
         </div>
         <div className="addProductItem">
-          <label>Genre</label>
-          <select name="genreId" value={album.genreId} onChange={handleChange}>
-            <option value="">Select Genre</option>
-            {genres.map(genre => (
-              <option key={genre.genreId} value={genre.genreId}>{genre.genreName}</option>
+          <label>Artist</label>
+          <select name="artistId" value={track.artistId} onChange={handleChange}>
+            <option value="">Select Artist</option>
+            {artists.map(artist => (
+              <option key={artist.artistId} value={artist.artistId}>{artist.artistName}</option>
             ))}
           </select>
         </div>

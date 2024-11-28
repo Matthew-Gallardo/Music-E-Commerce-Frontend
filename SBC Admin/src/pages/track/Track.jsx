@@ -10,28 +10,29 @@ export default function Track() {
   const [track, setTrack] = useState({
     trackName: '',
     trackMusic: '',
-    trackPrice: '',
     albumId: '',
     artistId: ''
   });
   const [newMusicUploaded, setNewMusicUploaded] = useState(false);
 
+  const fetchTrackDetails = async (trackId) => {
+    try {
+      const response = await axios.get(`/musictest/track/${trackId}`);
+      const trackData = response.data;
+      setTrack({
+        trackName: trackData.trackName,
+        trackMusic: trackData.trackMusic,
+        trackPrice: trackData.trackPrice,
+        albumId: trackData.album ? trackData.album.albumId : null,
+        artistId: trackData.artist.artistId
+      });
+    } catch (error) {
+      console.error('Error fetching track details:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchTrackDetails = async () => {
-      try {
-        const response = await axios.get(`/musictest/track/${trackId}`);
-        const trackData = response.data;
-        setTrack({
-          trackName: trackData.trackName,
-          trackMusic: trackData.trackMusic,
-          trackPrice: trackData.trackPrice,
-          albumId: trackData.album.albumId,
-          artistId: trackData.artist.artistId
-        });
-      } catch (error) {
-        console.error('Error fetching track details:', error);
-      }
-    };
+    fetchTrackDetails(trackId);
 
     const fetchArtistsAndAlbums = async () => {
       try {
@@ -46,7 +47,6 @@ export default function Track() {
       }
     };
 
-    fetchTrackDetails();
     fetchArtistsAndAlbums();
   }, [trackId]);
 
@@ -88,8 +88,13 @@ export default function Track() {
       console.log('Updating track with data:', updatedTrack);
       console.log('Track ID:', trackId);
       const response = await axios.put(`/musictest/track/update/${trackId}`, updatedTrack);
-      console.log('Update response:', response);
-      alert('Track updated successfully');
+      console.log('Update response:', response.data); // Log the response data
+      if (response.status === 200) {
+        alert('Track updated successfully');
+        history.push('/tracks'); // Redirect to the list of tracks
+      } else {
+        alert('Failed to update track');
+      }
     } catch (error) {
       console.error('Error updating track:', error);
       alert('Failed to update track');
@@ -105,8 +110,6 @@ export default function Track() {
           <label>Music</label>
           <input type="file" id="file" accept="audio/*" onChange={handleFileChange} />
           {track.trackMusic && <audio controls src={track.trackMusic} />}
-          <label>Price</label>
-          <input type="number" name="trackPrice" placeholder="Track Price" value={track.trackPrice} onChange={handleChange} />
           <label>Album</label>
           <select name="albumId" value={track.albumId} onChange={handleChange}>
             <option value="">Select Album</option>

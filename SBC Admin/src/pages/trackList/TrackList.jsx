@@ -16,7 +16,17 @@ export default function TrackList() {
   }, []);
 
   const handleDelete = (id) => {
-    setData(data.filter((item) => item.trackId !== id));
+    fetch(`/musictest/track/delete/${id}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (response.ok) {
+          setData(data.filter((item) => item.trackId !== id));
+        } else {
+          console.error("Error deleting track:", response.statusText);
+        }
+      })
+      .catch((error) => console.error("Error deleting track:", error));
   };
 
   const columns = [
