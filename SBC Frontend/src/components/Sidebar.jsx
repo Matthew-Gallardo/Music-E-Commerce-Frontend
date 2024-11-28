@@ -1,4 +1,6 @@
-import styled from "styled-components";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Container = styled.div`
   width: 18%;
@@ -23,32 +25,55 @@ const GenreList = styled.ul`
 `;
 
 const GenreItem = styled.li`
-  margin-bottom: 10px;
   cursor: pointer;
-  font-weight: 500;
+  margin-bottom: 10px;
   &:hover {
-    color: #007bff;
     text-decoration: underline;
   }
 `;
 
 const Sidebar = () => {
-  const genres = ["Pop", "Rock", "Jazz", "Hip-Hop", "Classical", "Electronic"];
-  const topMusic = ["Song A", "Song B", "Song C", "Song D"];
+  const [genres, setGenres] = useState([]);
+  const [artists, setArtists] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch('/musictest/genre/all')
+      .then(response => response.json())
+      .then(data => setGenres(data))
+      .catch(error => console.error('Error fetching genres:', error));
+
+    fetch('/musictest/artist/all')
+      .then(response => response.json())
+      .then(data => setArtists(data))
+      .catch(error => console.error('Error fetching artists:', error));
+  }, []);
+
+  const handleGenreClick = (genreId) => {
+    navigate(`/albums/genre/${genreId}`);
+  };
+
+  const handleArtistClick = (artistId) => {
+    navigate(`/albums/artist/${artistId}`);
+  };
 
   return (
     <Container>
       <SectionTitle>Genres</SectionTitle>
       <GenreList>
-        {genres.map((genre, index) => (
-          <GenreItem key={index}>{genre}</GenreItem>
+        {genres.map((genre) => (
+          <GenreItem key={genre.genreId} onClick={() => handleGenreClick(genre.genreId)}>
+            {genre.genreName}
+          </GenreItem>
         ))}
       </GenreList>
 
-      <SectionTitle>Categories</SectionTitle>
+      <SectionTitle>Artists</SectionTitle>
       <GenreList>
-        {topMusic.map((music, index) => (
-          <GenreItem key={index}>{music}</GenreItem>
+        {artists.map((artist) => (
+          <GenreItem key={artist.artistId} onClick={() => handleArtistClick(artist.artistId)}>
+            {artist.artistName}
+          </GenreItem>
         ))}
       </GenreList>
     </Container>
