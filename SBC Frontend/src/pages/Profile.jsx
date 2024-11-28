@@ -105,7 +105,6 @@ const Profile = () => {
 
   return (
     <>
-      <Navbar />
       <Announcement />
       <Container>
         <Wrapper>

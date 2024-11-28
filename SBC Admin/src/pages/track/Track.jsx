@@ -88,10 +88,10 @@ export default function Track() {
       console.log('Updating track with data:', updatedTrack);
       console.log('Track ID:', trackId);
       const response = await axios.put(`/musictest/track/update/${trackId}`, updatedTrack);
-      console.log('Update response:', response.data); // Log the response data
+      console.log('Update response:', response.data); 
       if (response.status === 200) {
         alert('Track updated successfully');
-        history.push('/tracks'); // Redirect to the list of tracks
+        history.push('/tracks'); 
       } else {
         alert('Failed to update track');
       }

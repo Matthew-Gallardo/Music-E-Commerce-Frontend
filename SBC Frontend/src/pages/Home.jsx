@@ -30,7 +30,6 @@ const Home = () => {
   return (
     <Container>
       <Announcement />
-      <Navbar />
       <ContentWrapper>
         <Sidebar /> 
         <MainContent>

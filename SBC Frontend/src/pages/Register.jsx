@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Announcement from "../components/Announcement";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Container = styled.div`
@@ -72,6 +73,8 @@ const Register = () => {
     securityAnswer: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -82,6 +85,7 @@ const Register = () => {
       const response = await axios.post("/musictest/user/register", form);
       if (response.data) {
         alert("Registration successful");
+        navigate("/");
       } else {
         alert("Registration failed");
       }
@@ -93,7 +97,6 @@ const Register = () => {
 
   return (
     <>
-      <Navbar />
       <Announcement />
       <Container>
         <Wrapper>

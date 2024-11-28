@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Announcement from "../components/Announcement";
 import { useState } from "react";
 import axios from "axios"; 
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -59,8 +60,9 @@ const ErrorMessage = styled.p`
   margin: 10px 0;
 `;
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -77,7 +79,8 @@ const Login = () => {
         { withCredentials: true } 
       );
       if (response.status === 200) {
-        console.log("success!!!");
+        onLogin(true);
+        navigate("/");
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -87,9 +90,9 @@ const Login = () => {
       }
     }
   };
+
   return (
     <>
-      <Navbar />
       <Announcement />
       <Container>
         <Wrapper>
