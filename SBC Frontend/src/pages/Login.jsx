@@ -60,8 +60,25 @@ const ErrorMessage = styled.p`
   margin: 10px 0;
 `;
 
+const Select = styled.select`
+  flex: 1;
+  min-width: 40%;
+  margin: 10px 0;
+  padding: 10px;
+`;
+
+const Option = styled.option`
+  padding: 10px;
+`;
+
 const Login = ({ onLogin }) => {
   const [error, setError] = useState(null);
+  const [forgotPassword, setForgotPassword] = useState(false);
+  const [securityForm, setSecurityForm] = useState({
+    username: "",
+    securityQuestion: "",
+    securityAnswer: ""
+  });
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -91,22 +108,77 @@ const Login = ({ onLogin }) => {
     }
   };
 
+  const handleForgotPasswordChange = (e) => {
+    setSecurityForm({ ...securityForm, [e.target.name]: e.target.value });
+  };
+
+  const handleForgotPasswordSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/musictest/user/forgot-password", securityForm);
+      if (response.data) {
+        onLogin(true);
+        alert("Validation successful");
+        navigate("/");
+      } else {
+        alert("Validation failed");
+      }
+    } catch (err) {
+      console.error("Error during validation", err);
+      alert("An error occurred during validation");
+    }
+  };
+
   return (
     <>
       <Announcement />
       <Container>
         <Wrapper>
-          <Title>LOGIN</Title>
-          <Form onSubmit={handleLogin}>
-            <Input name="username" placeholder="Username" />
-            <Input name="password" type="password" placeholder="Password" />
-            <Button type="submit">LOGIN</Button>
-
-            {error && <ErrorMessage>{error}</ErrorMessage>}
-
-            <Link>FORGOT PASSWORD?</Link>
-            <Link>CREATE A NEW ACCOUNT</Link>
-          </Form>
+          <Title>{forgotPassword ? "FORGOT PASSWORD" : "LOGIN"}</Title>
+          {forgotPassword ? (
+            <Form onSubmit={handleForgotPasswordSubmit}>
+              <Input
+                name="username"
+                placeholder="Username"
+                onChange={handleForgotPasswordChange}
+              />
+              <Select
+                name="securityQuestion"
+                value={securityForm.securityQuestion}
+                onChange={handleForgotPasswordChange}
+              >
+                <Option value="" disabled>
+                  Select a security question
+                </Option>
+                <Option value="What is your pet's name?">
+                  What is your pet's name?
+                </Option>
+                <Option value="What is your mother's maiden name?">
+                  What is your mother's maiden name?
+                </Option>
+                <Option value="What was the name of your first school?">
+                  What was the name of your first school?
+                </Option>
+                <Option value="What is your favorite food?">
+                  What is your favorite food?
+                </Option>
+              </Select>
+              <Input
+                name="securityAnswer"
+                placeholder="Answer"
+                onChange={handleForgotPasswordChange}
+              />
+              <Button type="submit">VALIDATE</Button>
+            </Form>
+          ) : (
+            <Form onSubmit={handleLogin}>
+              <Input name="username" placeholder="Username" />
+              <Input name="password" type="password" placeholder="Password" />
+              <Button type="submit">LOGIN</Button>
+              {error && <ErrorMessage>{error}</ErrorMessage>}
+              <Link onClick={() => setForgotPassword(true)}>FORGOT PASSWORD?</Link>
+            </Form>
+          )}
         </Wrapper>
       </Container>
       <Footer />

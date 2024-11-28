@@ -89,10 +89,10 @@ const Product = ({ item }) => {
     <Link to={`/product/${item.albumId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
       <Container>
         <Circle />
-        <Image src={item.albumImage} />
+        <Image src={item.albumImage} alt={item.albumName} />
         <TextContainer>
           <Title>{item.albumName}</Title>
-          <Artist>{item.artist.artistName}</Artist>
+          <Artist>{item.artist ? item.artist.artistName : "Unknown Artist"}</Artist>
         </TextContainer>
         <Info>
           <Icon>
