@@ -1,27 +1,9 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import Navbar from "../components/Navbar";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 
 const Container = styled.div`
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Wrapper = styled.div`
-  width: 50%;
-  padding: 20px;
-`;
-
-const Title = styled.h1`
-  text-align: center;
-  font-size: 24px;
-  font-weight: 500;
-  margin-bottom: 20px;
 `;
 
 const Form = styled.form`
@@ -37,164 +19,146 @@ const Input = styled.input`
   border-radius: 5px;
   width: 100%;
   box-sizing: border-box;
-
-  &:focus {
-    outline: none;
-    border-color: teal;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
 `;
 
 const Button = styled.button`
-  padding: 10px 20px;
-  background-color: teal;
-  color: white;
+  padding: 10px;
   font-size: 16px;
-  font-weight: bold;
+  background-color: #007bff;
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-
-  &:hover {
-    background-color: #004d4d;
-  }
 `;
 
 const Profile = () => {
-  const [form, setForm] = useState({
-    userFirstname: "",
-    userLastname: "",
-    userEmail: "",
-    userMobile: "",
-    userStreet: "",
-    userCity: "",
-    userState: "",
-    userZipcode: "",
-    userCountry: "",
-    userBillingAddress: "",
-    userShippingAddress: "",
+  const [user, setUser] = useState({
+    userFirstname: '',
+    userLastname: '',
+    userEmail: '',
+    userMobile: '',
+    userStreet: '',
+    userCity: '',
+    userState: '',
+    userZipcode: '',
+    userCountry: '',
+    userBillingAddress: '',
+    userShippingAddress: ''
   });
 
+  useEffect(() => {
+    axios.get('/musictest/profile', { withCredentials: true })
+      .then(response => {
+        setUser(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the user profile!', error);
+      });
+  }, []);
+
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setUser(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form data:", form);
-    try {
-      const response = await axios.post("/musictest/profile/add", form);
-      if (response.status === 200) {
-        alert("User profile added successfully.");
-      } else {
-        alert("Error adding user profile.");
-      }
-    } catch (err) {
-      console.error("Error adding user profile", err);
-      if (err.response) {
-        console.error("Response data:", err.response.data); // Log response data
-      }
-      alert("An error occurred. Please try again.");
-    }
+    axios.put('/musictest/profile/update', user, { withCredentials: true })
+      .then(response => {
+        alert('Profile updated successfully');
+      })
+      .catch(error => {
+        console.error('There was an error updating the profile!', error);
+      });
   };
 
   return (
-    <>
-      <Announcement />
-      <Container>
-        <Wrapper>
-          <Title>User Profile</Title>
-          <Form onSubmit={handleSubmit}>
-            <Input
-              type="text"
-              name="userFirstname"
-              value={form.userFirstname}
-              onChange={handleChange}
-              placeholder="First Name"
-            />
-            <Input
-              type="text"
-              name="userLastname"
-              value={form.userLastname}
-              onChange={handleChange}
-              placeholder="Last Name"
-            />
-            <Input
-              type="email"
-              name="userEmail"
-              value={form.userEmail}
-              onChange={handleChange}
-              placeholder="Email"
-            />
-            <Input
-              type="text"
-              name="userMobile"
-              value={form.userMobile}
-              onChange={handleChange}
-              placeholder="Mobile"
-            />
-            <Input
-              type="text"
-              name="userStreet"
-              value={form.userStreet}
-              onChange={handleChange}
-              placeholder="Street"
-            />
-            <Input
-              type="text"
-              name="userCity"
-              value={form.userCity}
-              onChange={handleChange}
-              placeholder="City"
-            />
-            <Input
-              type="text"
-              name="userState"
-              value={form.userState}
-              onChange={handleChange}
-              placeholder="State"
-            />
-            <Input
-              type="text"
-              name="userZipcode"
-              value={form.userZipcode}
-              onChange={handleChange}
-              placeholder="Zipcode"
-            />
-            <Input
-              type="text"
-              name="userCountry"
-              value={form.userCountry}
-              onChange={handleChange}
-              placeholder="Country"
-            />
-            <Input
-              type="text"
-              name="userBillingAddress"
-              value={form.userBillingAddress}
-              onChange={handleChange}
-              placeholder="Billing Address"
-            />
-            <Input
-              type="text"
-              name="userShippingAddress"
-              value={form.userShippingAddress}
-              onChange={handleChange}
-              placeholder="Shipping Address"
-            />
-            <ButtonContainer>
-              <Button type="submit">Submit</Button>
-            </ButtonContainer>
-          </Form>
-        </Wrapper>
-      </Container>
-      <Footer />
-    </>
+    <Container>
+      <h1>Profile</h1>
+      <Form onSubmit={handleSubmit}>
+        <Input
+          type="text"
+          name="userFirstname"
+          value={user.userFirstname}
+          onChange={handleChange}
+          placeholder="First Name"
+        />
+        <Input
+          type="text"
+          name="userLastname"
+          value={user.userLastname}
+          onChange={handleChange}
+          placeholder="Last Name"
+        />
+        <Input
+          type="email"
+          name="userEmail"
+          value={user.userEmail}
+          onChange={handleChange}
+          placeholder="Email"
+        />
+        <Input
+          type="text"
+          name="userMobile"
+          value={user.userMobile}
+          onChange={handleChange}
+          placeholder="Mobile"
+        />
+        <Input
+          type="text"
+          name="userStreet"
+          value={user.userStreet}
+          onChange={handleChange}
+          placeholder="Street"
+        />
+        <Input
+          type="text"
+          name="userCity"
+          value={user.userCity}
+          onChange={handleChange}
+          placeholder="City"
+        />
+        <Input
+          type="text"
+          name="userState"
+          value={user.userState}
+          onChange={handleChange}
+          placeholder="State"
+        />
+        <Input
+          type="text"
+          name="userZipcode"
+          value={user.userZipcode}
+          onChange={handleChange}
+          placeholder="Zipcode"
+        />
+        <Input
+          type="text"
+          name="userCountry"
+          value={user.userCountry}
+          onChange={handleChange}
+          placeholder="Country"
+        />
+        <Input
+          type="text"
+          name="userBillingAddress"
+          value={user.userBillingAddress}
+          onChange={handleChange}
+          placeholder="Billing Address"
+        />
+        <Input
+          type="text"
+          name="userShippingAddress"
+          value={user.userShippingAddress}
+          onChange={handleChange}
+          placeholder="Shipping Address"
+        />
+        <Button type="submit">Update Profile</Button>
+      </Form>
+    </Container>
   );
 };
 

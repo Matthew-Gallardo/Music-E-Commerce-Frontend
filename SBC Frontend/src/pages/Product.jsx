@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Add, Remove } from "@mui/icons-material";
 import styled from "styled-components";
+import axios from "axios";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Newsletter from "../components/Newsletter";
 
+// Define styled components
 const Container = styled.div``;
 
 const Wrapper = styled.div`
@@ -114,45 +116,70 @@ const Button = styled.button`
   }
 `;
 
-
 const Product = () => {
   const { id } = useParams();
-  const [album, setAlbum] = useState(null);
+  const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    const fetchAlbum = async () => {
+    const fetchProduct = async () => {
       try {
-        const response = await fetch(`/musictest/album/${id}`);
-        const data = await response.json();
-        setAlbum(data);
+        const response = await axios.get(`/musictest/album/${id}`);
+        setProduct(response.data);
       } catch (error) {
-        console.error("Error fetching album:", error);
+        console.error("Error fetching product:", error);
       }
     };
 
-    fetchAlbum();
+    fetchProduct();
   }, [id]);
 
-  if (!album) {
-    return <div>Loading...</div>;
-  }
+  const handleQuantityChange = (type) => {
+    if (type === "inc") {
+      setQuantity(quantity + 1);
+    } else {
+      if (quantity > 1) {
+        setQuantity(quantity - 1);
+      }
+    }
+  };
+
+  const handleAddToCart = async () => {
+    try {
+      const data = {
+        cart_alb_id: product?.albumId,
+        cartQuantity: quantity,
+        album: {
+          albumId: product?.albumId,
+        },
+      };
+      console.log("Sending data to server:", data);
+  
+      const response = await axios.post("/musictest/api/cart-items", data);
+      console.log("Item added to cart:", response.data);
+      console.log("Full server response:", response);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
+  if (!product) return <div>Loading...</div>;
 
   return (
     <Container>
-      <Announcement/>
+      <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src={album.albumImage} />
+          <Image src={product?.albumImage} />
         </ImgContainer>
         <InfoContainer>
-          <Title>{album.albumName}</Title>
-          <Artist>{album.artist.artistName}</Artist>
-          <Genre>{album.genre.genreName}</Genre>
-          <Desc>{album.albumDesc}</Desc>
-          <Price>₱{album.albumPrice}</Price>
+          <Title>{product?.albumName}</Title>
+          <Artist>{product?.artist?.artistName}</Artist>
+          <Genre>{product?.genre?.genreName}</Genre>
+          <Desc>{product?.albumDesc}</Desc>
+          <Price>₱{product?.albumPrice}</Price>
           <TracksContainer>
             <TracksTitle>Tracks:</TracksTitle>
-            {album.tracks.map((track, index) => (
+            {product?.tracks?.map((track, index) => (
               <Track key={index}>
                 <TrackName>{`${index + 1}. ${track.trackName}`}</TrackName>
                 <AudioPlayer controls>
@@ -164,11 +191,11 @@ const Product = () => {
           </TracksContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove onClick={() => handleQuantityChange("dec")} />
+              <Amount>{quantity}</Amount>
+              <Add onClick={() => handleQuantityChange("inc")} />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button onClick={handleAddToCart}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
