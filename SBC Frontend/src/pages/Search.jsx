@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation , Link} from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { ShoppingCartOutlined, SearchOutlined } from "@mui/icons-material";
@@ -93,50 +93,50 @@ const Icon = styled.div`
 `;
 
 const Search = () => {
-    const location = useLocation();
-    const query = new URLSearchParams(location.search).get("query");
-    const [albums, setAlbums] = useState([]);
-  
-    useEffect(() => {
-      const fetchAlbums = async () => {
-        try {
-          const response = await axios.get(`/musictest/album/search?query=${query}`);
-          setAlbums(response.data);
-        } catch (err) {
-          console.error("Error fetching albums", err);
-        }
-      };
-  
-      if (query) {
-        fetchAlbums();
-      }
-    }, [query]);
-  
-    return (
-      <Container>
-        <Title>Search Results for "{query}"</Title>
-        {albums.map((album) => (
-          <Link to={`/product/${album.id}`} key={album.id}>
-            <AlbumContainer>
-              <Circle />
-              <Image src={album.albumImage} alt={album.albumName} />
-              <TextContainer>
-                <AlbumTitle>{album.albumName}</AlbumTitle>
-                <Artist>{album.artist ? album.artist.artistName : "Unknown Artist"}</Artist>
-              </TextContainer>
-              <Info>
-                <Icon>
-                  <ShoppingCartOutlined />
-                </Icon>
-                <Icon>
-                  <SearchOutlined />
-                </Icon>
-              </Info>
-            </AlbumContainer>
-          </Link>
-        ))}
-      </Container>
-    );
-  };
+  const location = useLocation();
+  const query = new URLSearchParams(location.search).get("query");
+  const [albums, setAlbums] = useState([]);
 
-  export default Search;
+  useEffect(() => {
+    const fetchAlbums = async () => {
+      try {
+        const response = await axios.get(`/musictest/album/search?query=${query}`);
+        setAlbums(response.data);
+      } catch (err) {
+        console.error("Error fetching albums", err);
+      }
+    };
+
+    if (query) {
+      fetchAlbums();
+    }
+  }, [query]);
+
+  return (
+    <Container>
+      <Title>Search Results for "{query}"</Title>
+      {albums.map((album) => (
+        <Link to={`/product/${album.albumId}`} key={album.albumId}>
+          <AlbumContainer>
+            <Circle />
+            <Image src={album.albumImage} alt={album.albumName} />
+            <TextContainer>
+              <AlbumTitle>{album.albumName}</AlbumTitle>
+              <Artist>{album.artist ? album.artist.artistName : "Unknown Artist"}</Artist>
+            </TextContainer>
+            <Info>
+              <Icon>
+                <ShoppingCartOutlined />
+              </Icon>
+              <Icon>
+                <SearchOutlined />
+              </Icon>
+            </Info>
+          </AlbumContainer>
+        </Link>
+      ))}
+    </Container>
+  );
+};
+
+export default Search;
