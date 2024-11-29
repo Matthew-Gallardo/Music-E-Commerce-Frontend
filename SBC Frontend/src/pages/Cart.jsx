@@ -93,39 +93,41 @@ const ProductPrice = styled.div`
 `;
 
 const Cart = () => {
-  const [cart, setCart] = useState(null);
   const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     axios.get('/musictest/user/session', { withCredentials: true })
       .then(response => {
         const userId = response.data.userId;
-        console.log('User ID:', userId); // To check what is the user
+        console.log('User ID:', userId); // Log the user ID
         return axios.get(`/musictest/api/carts/user/${userId}`, { withCredentials: true });
       })
       .then(response => {
-        setCart(response.data);
-        setCartItems(response.data.cartItems);
-        console.log('Cart ID:', response.data.cartId); // To check the log
+        const aggregatedItems = aggregateCartItems(response.data.cartItems || []);
+        setCartItems(aggregatedItems);
+        console.log('Aggregated Cart Items:', aggregatedItems); // Log the aggregated cart items
+        setLoading(false);
       })
       .catch(error => {
-        console.error('There was an error fetching the cart!', error);
+        console.error('There was an error fetching the cart items!', error);
+        setError('There was an error fetching the cart items.');
+        setLoading(false);
       });
   }, []);
 
-  const addItemToCart = (albumId, quantity) => {
-    axios.post('/musictest/api/cart-items', {
-      cart: { cartId: cart.cartId },
-      album: { albumId: albumId },
-      cartQuantity: quantity
-    }, { withCredentials: true })
-      .then(response => {
-        setCartItems([...cartItems, response.data]);
-        console.log('Added item to cart:', response.data); // Log the added item
-      })
-      .catch(error => {
-        console.error('There was an error adding the item to the cart!', error);
-      });
+  const aggregateCartItems = (items) => {
+    const itemMap = new Map();
+    items.forEach(item => {
+      const albumId = item.album.albumId;
+      if (itemMap.has(albumId)) {
+        itemMap.get(albumId).cartQuantity += item.cartQuantity;
+      } else {
+        itemMap.set(albumId, { ...item });
+      }
+    });
+    return Array.from(itemMap.values());
   };
 
   const updateCartItem = (cartItemId, quantity) => {
@@ -152,6 +154,14 @@ const Cart = () => {
       });
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <Container>
       <Top>
@@ -166,19 +176,19 @@ const Cart = () => {
           {cartItems.map(item => (
             <Product key={item.cartItemId}>
               <ProductDetail>
-                <Image src={item.album.imageUrl} />
+                <Image src={item.album.albumImage} />
                 <Details>
                   <ProductName>
-                    <b>Title:</b> {item.album.title}
+                    <b>Title:</b> {item.album.albumName}
                   </ProductName>
                   <ProductId>
                     <b>ID:</b> {item.album.albumId}
                   </ProductId>
                   <ProductGenre>
-                    <b>Genre:</b> {item.album.genre}
+                    <b>Genre:</b> {item.album.genre.genreName}
                   </ProductGenre>
                   <ProductTracks>
-                    <b>Tracks:</b> {item.album.tracks}
+                    <b>Tracks:</b> {item.album.tracks.map(track => track.trackName).join(', ')}
                   </ProductTracks>
                 </Details>
               </ProductDetail>
@@ -188,7 +198,7 @@ const Cart = () => {
                   <ProductAmount>{item.cartQuantity}</ProductAmount>
                   <button onClick={() => updateCartItem(item.cartItemId, item.cartQuantity - 1)}>-</button>
                 </ProductAmountContainer>
-                <ProductPrice>$ {item.album.price * item.cartQuantity}</ProductPrice>
+                <ProductPrice>₱ {item.album.albumPrice * item.cartQuantity}</ProductPrice>
                 <button onClick={() => removeCartItem(item.cartItemId)}>Remove</button>
               </PriceDetail>
             </Product>

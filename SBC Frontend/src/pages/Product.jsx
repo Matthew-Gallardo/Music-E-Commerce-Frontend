@@ -120,6 +120,7 @@ const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [cartId, setCartId] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -131,7 +132,21 @@ const Product = () => {
       }
     };
 
+    const fetchCartId = async () => {
+      try {
+        const response = await axios.get('/musictest/user/session', { withCredentials: true });
+        const userId = response.data.userId;
+        console.log('User ID:', userId); // Log the user ID
+        const cartResponse = await axios.get(`/musictest/api/carts/user/${userId}`, { withCredentials: true });
+        setCartId(cartResponse.data.cartId);
+        console.log('Cart ID:', cartResponse.data.cartId); // Log the cart ID
+      } catch (error) {
+        console.error("Error fetching cart ID:", error);
+      }
+    };
+
     fetchProduct();
+    fetchCartId();
   }, [id]);
 
   const handleQuantityChange = (type) => {
@@ -147,21 +162,20 @@ const Product = () => {
   const handleAddToCart = async () => {
     try {
       const data = {
-        cart_alb_id: product?.albumId,
+        cart: { cartId: cartId },
+        album: { albumId: product?.albumId },
         cartQuantity: quantity,
-        album: {
-          albumId: product?.albumId,
-        },
       };
       console.log("Sending data to server:", data);
   
-      const response = await axios.post("/musictest/api/cart-items", data);
+      const response = await axios.post("/musictest/api/cart-items", data, { withCredentials: true });
       console.log("Item added to cart:", response.data);
       console.log("Full server response:", response);
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
   };
+
   if (!product) return <div>Loading...</div>;
 
   return (
