@@ -1,6 +1,7 @@
 import "./newGenre.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function NewGenre() {
   const [genreName, setGenreName] = useState("");
@@ -21,13 +22,28 @@ export default function NewGenre() {
       });
 
       if (response.ok) {
-        console.log("Genre created successfully");
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Genre created successfully",
+          showConfirmButton: false,
+          timer: 1500
+        });
         navigate("/genre");
       } else {
-        console.error("Error creating genre");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Error creating genre.'
+        });
       }
     } catch (error) {
-      console.error("Error creating genre:", error);
+      console.error('Error creating genre:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'An error occurred. Please try again.'
+      });
     }
   };
 

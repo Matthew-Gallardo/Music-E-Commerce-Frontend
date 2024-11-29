@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { DeleteOutline } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 
 export default function GenreList() {
   const [data, setData] = useState([]);
@@ -14,20 +15,35 @@ export default function GenreList() {
       .catch((error) => console.error("Error fetching genre data:", error));
   }, []);
 
-  const handleDelete = async (id) => {
-    try {
-      const response = await fetch(`/musictest/genre/delete/${id}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        setData(data.filter((item) => item.genreId !== id));
-        console.log("Genre deleted successfully");
-      } else {
-        console.error("Error deleting genre");
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure you want to delete this genre?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      denyButtonText: `Don't delete`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`/musictest/genre/delete/${id}`, {
+          method: 'DELETE',
+        })
+          .then((response) => {
+            if (response.ok) {
+              setData(data.filter((item) => item.genreId !== id));
+              Swal.fire("Deleted!", "Genre has been deleted.", "success");
+            } else {
+              console.error(`Error deleting genre: ${response.statusText}`);
+              Swal.fire("Error!", `Error deleting genre: ${response.statusText}`, "error");
+            }
+          })
+          .catch((error) => {
+            console.error("Error deleting genre:", error);
+            Swal.fire("Error!", "Error deleting genre.", "error");
+          });
+      } else if (result.isDenied) {
+        Swal.fire("Cancelled", "Genre was not deleted", "info");
       }
-    } catch (error) {
-      console.error("Error deleting genre:", error);
-    }
+    });
   };
 
   const columns = [

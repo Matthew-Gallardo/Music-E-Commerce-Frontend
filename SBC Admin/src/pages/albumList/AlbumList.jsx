@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { DeleteOutline } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Swal from 'sweetalert2';
 
 export default function AlbumList() {
   const [data, setData] = useState([]);
@@ -15,18 +16,34 @@ export default function AlbumList() {
   }, []);
 
   const handleDelete = (id) => {
-    fetch(`/musictest/album/delete/${id}`, {
-      method: 'DELETE',
-    })
-      .then((response) => {
-        if (response.ok) {
-          setData(data.filter((item) => item.albumId !== id));
-          console.log("Album deleted successfully");
-        } else {
-          console.error(`Error deleting album: ${response.statusText}`);
-        }
-      })
-      .catch((error) => console.error("Error deleting album:", error));
+    Swal.fire({
+      title: "Are you sure you want to delete this album?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      denyButtonText: `Don't delete`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`/musictest/album/delete/${id}`, {
+          method: 'DELETE',
+        })
+          .then((response) => {
+            if (response.ok) {
+              setData(data.filter((item) => item.albumId !== id));
+              Swal.fire("Deleted!", "Album has been deleted.", "success");
+            } else {
+              console.error(`Error deleting album: ${response.statusText}`);
+              Swal.fire("Error!", `Error deleting album: ${response.statusText}`, "error");
+            }
+          })
+          .catch((error) => {
+            console.error("Error deleting album:", error);
+            Swal.fire("Error!", "Error deleting album.", "error");
+          });
+      } else if (result.isDenied) {
+        Swal.fire("Cancelled", "Album was not deleted", "info");
+      }
+    });
   };
 
   const columns = [

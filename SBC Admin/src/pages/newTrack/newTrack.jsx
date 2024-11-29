@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './newTrack.css';
+import Swal from 'sweetalert2';
 
 export default function NewTrack() {
   const [artists, setArtists] = useState([]);
@@ -62,16 +63,30 @@ export default function NewTrack() {
     try {
       const response = await axios.post('/musictest/track/add', track);
       if (response.status === 200) {
-        alert('Track created successfully.');
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Track created successfully",
+          showConfirmButton: false,
+          timer: 1500
+        });
       } else {
-        alert('Error creating track.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Error creating track.'
+        });
       }
     } catch (err) {
       console.error('Error creating track', err);
       if (err.response) {
         console.error('Response data:', err.response.data);
       }
-      alert('An error occurred. Please try again.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'An error occurred. Please try again.'
+      });
     }
   };
 

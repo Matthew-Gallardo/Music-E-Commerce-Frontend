@@ -1,6 +1,7 @@
 import "./newArtist.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 export default function NewArtist() {
   const [artistName, setArtistName] = useState("");
@@ -9,34 +10,34 @@ export default function NewArtist() {
   const [artistLocation, setArtistLocation] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const newArtist = {
-      artistName,
-      artistNumber,
-      artistEmail,
-      artistLocation,
-    };
+    const newArtist = { artistName, artistEmail, artistLocation };
 
-    try {
-      const response = await fetch("/musictest/artist/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newArtist),
-      });
-
-      if (response.ok) {
-        console.log("Artist created successfully");
-        navigate("/artist"); 
-      } else {
-        console.error("Error creating artist");
-      }
-    } catch (error) {
-      console.error("Error creating artist:", error);
-    }
+    fetch("/musictest/artist/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newArtist),
+    })
+      .then((response) => {
+        if (response.ok) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Created an Artist Record",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          navigate("/artist");
+        } else {
+          console.error("Error creating artist:", response.statusText);
+        }
+      })
+      .catch((error) => console.error("Error creating artist:", error));
   };
+
 
   return (
     <div className="newArtist">

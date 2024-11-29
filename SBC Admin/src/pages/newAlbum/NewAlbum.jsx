@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import './newAlbum.css';
+import Swal from 'sweetalert2';
 
 export default function NewAlbum() {
   const { albumId } = useParams();

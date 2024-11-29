@@ -1,79 +1,50 @@
 import "./widgetLg.css";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function WidgetLg() {
-  const Button = ({ type }) => {
-    return <button className={"widgetLgButton " + type}>{type}</button>;
-  };
+  const [albums, setAlbums] = useState([]);
+
+  useEffect(() => {
+    const fetchAlbums = async () => {
+      try {
+        const response = await axios.get("/musictest/album/all");
+        setAlbums(response.data);
+      } catch (error) {
+        console.error("Error fetching album data:", error);
+      }
+    };
+
+    fetchAlbums();
+  }, []);
+
   return (
     <div className="widgetLg">
-      <h3 className="widgetLgTitle">Latest transactions</h3>
+      <h3 className="widgetLgTitle">Newly Created Albums</h3>
       <table className="widgetLgTable">
-        <tr className="widgetLgTr">
-          <th className="widgetLgTh">Customer</th>
-          <th className="widgetLgTh">Date</th>
-          <th className="widgetLgTh">Amount</th>
-          <th className="widgetLgTh">Status</th>
-        </tr>
-        <tr className="widgetLgTr">
-          <td className="widgetLgUser">
-            <img
-              src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-              alt=""
-              className="widgetLgImg"
-            />
-            <span className="widgetLgName">Susan Carol</span>
-          </td>
-          <td className="widgetLgDate">2 Jun 2021</td>
-          <td className="widgetLgAmount">$122.00</td>
-          <td className="widgetLgStatus">
-            <Button type="Approved" />
-          </td>
-        </tr>
-        <tr className="widgetLgTr">
-          <td className="widgetLgUser">
-            <img
-              src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-              alt=""
-              className="widgetLgImg"
-            />
-            <span className="widgetLgName">Susan Carol</span>
-          </td>
-          <td className="widgetLgDate">2 Jun 2021</td>
-          <td className="widgetLgAmount">$122.00</td>
-          <td className="widgetLgStatus">
-            <Button type="Declined" />
-          </td>
-        </tr>
-        <tr className="widgetLgTr">
-          <td className="widgetLgUser">
-            <img
-              src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-              alt=""
-              className="widgetLgImg"
-            />
-            <span className="widgetLgName">Susan Carol</span>
-          </td>
-          <td className="widgetLgDate">2 Jun 2021</td>
-          <td className="widgetLgAmount">$122.00</td>
-          <td className="widgetLgStatus">
-            <Button type="Pending" />
-          </td>
-        </tr>
-        <tr className="widgetLgTr">
-          <td className="widgetLgUser">
-            <img
-              src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-              alt=""
-              className="widgetLgImg"
-            />
-            <span className="widgetLgName">Susan Carol</span>
-          </td>
-          <td className="widgetLgDate">2 Jun 2021</td>
-          <td className="widgetLgAmount">$122.00</td>
-          <td className="widgetLgStatus">
-            <Button type="Approved" />
-          </td>
-        </tr>
+        <thead>
+          <tr className="widgetLgTr">
+            <th className="widgetLgTh">Album</th>
+            <th className="widgetLgTh">Artist</th>
+            <th className="widgetLgTh">Genre</th>
+            <th className="widgetLgTh">Price</th>
+            <th className="widgetLgTh">Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {albums.map((album) => (
+            <tr className="widgetLgTr" key={album.albumId}>
+              <td className="widgetLgUser">
+                <img src={album.albumImage} alt="" className="widgetLgImg" />
+                <span className="widgetLgName">{album.albumName}</span>
+              </td>
+              <td className="widgetLgArtist">{album.artist.artistName}</td>
+              <td className="widgetLgGenre">{album.genre.genreName}</td>
+              <td className="widgetLgPrice">P{album.albumPrice.toFixed(2)}</td>
+              <td className="widgetLgQty">{album.albumQty}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );

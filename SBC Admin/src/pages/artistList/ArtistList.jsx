@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { DeleteOutline } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Swal from 'sweetalert2';
 
 export default function ArtistList() {
   const [data, setData] = useState([]);
@@ -14,21 +15,35 @@ export default function ArtistList() {
       .catch((error) => console.error("Error fetching artist data:", error));
   }, []);
 
-  const handleDelete = async (id) => {
-    try {
-      const response = await fetch(`/musictest/artist/delete/${id}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setData(data.filter((item) => item.artistId !== id));
-        console.log("Artist deleted successfully");
-      } else {
-        console.error("Error deleting artist");
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure you want to delete this artist?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      denyButtonText: `Don't delete`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`/musictest/artist/delete/${id}`, {
+          method: 'DELETE',
+        })
+          .then((response) => {
+            if (response.ok) {
+              setData(data.filter((item) => item.artistId !== id));
+              Swal.fire("Deleted!", "Artist has been deleted.", "success");
+            } else {
+              console.error(`Error deleting artist: ${response.statusText}`);
+              Swal.fire("Error!", `Error deleting artist: ${response.statusText}`, "error");
+            }
+          })
+          .catch((error) => {
+            console.error("Error deleting artist:", error);
+            Swal.fire("Error!", "Error deleting artist.", "error");
+          });
+      } else if (result.isDenied) {
+        Swal.fire("Cancelled", "Artist was not deleted", "info");
       }
-    } catch (error) {
-      console.error("Error deleting artist:", error);
-    }
+    });
   };
   
   const columns = [
@@ -82,6 +97,7 @@ export default function ArtistList() {
 
   return (
     <div className="artistList">
+      <h1>Artist</h1>
       <div className="artistCreateButtonContainer">
         <Link to="/newartist">
           <button className="artistCreateButton">Create</button>
