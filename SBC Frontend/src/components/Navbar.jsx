@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Badge, InputBase } from "@mui/material";
 import { AccountCircleOutlined,Search, ShoppingCartOutlined } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const Container = styled.div`
@@ -62,6 +62,7 @@ const MenuItem = styled.div`
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchInput, setSearchInput] = useState("");
 
   const handleLogout = async () => {
@@ -109,8 +110,12 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
           )}
         </Center>
         <Right>
-          {!isLoggedIn && <MenuItem onClick={() => navigate("/register")}>REGISTER</MenuItem>}
-          {!isLoggedIn && <MenuItem onClick={() => navigate("/login")}>SIGN IN</MenuItem>}
+          {!isLoggedIn && location.pathname !== '/register' && (
+            <MenuItem onClick={() => navigate("/register")}>REGISTER</MenuItem>
+          )}
+          {!isLoggedIn && location.pathname === '/register' && (
+            <MenuItem onClick={() => navigate("/login")}>LOGIN</MenuItem>
+          )}
           {isLoggedIn && <MenuItem onClick={handleLogout}>LOGOUT</MenuItem>}
           <MenuItem onClick={() => navigate("/cart")}>
             <Badge color="primary">

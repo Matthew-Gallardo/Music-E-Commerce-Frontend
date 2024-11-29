@@ -9,6 +9,7 @@ import Profile from './pages/Profile';
 import Search from './pages/Search'; 
 import FilteredAlbums from './pages/FilteredAlbums'; 
 import Navbar from './components/Navbar';
+import Payment from './components/Payment'; 
 
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/search" element={<Search />} /> 
         <Route path="/album/genre/:id" element={<FilteredAlbums type="genre" />} /> 
         <Route path="/album/artist/:id" element={<FilteredAlbums type="artist" />} />
+        <Route path="/checkout" element={<Payment />} /> {/* Add the Payment route */}
         {/* Add other routes here */}
       </Routes>
     </Router>

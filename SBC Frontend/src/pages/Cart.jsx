@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   padding: 20px;
@@ -92,11 +93,36 @@ const ProductPrice = styled.div`
   font-weight: 200;
 `;
 
+const Summary = styled.div`
+  flex: 1;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  padding: 20px;
+  height: 50vh;
+`;
+
+const SummaryTitle = styled.h1`
+  font-weight: 200;
+`;
+
+const SummaryItem = styled.div`
+  margin: 30px 0px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: ${(props) => (props.type === 'total' ? '500' : '400')};
+  font-size: ${(props) => (props.type === 'total' ? '24px' : '18px')};
+`;
+
+const SummaryItemText = styled.span``;
+
+const SummaryItemPrice = styled.span``;
+
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cartId, setCartId] = useState(null);
+  const navigate = useNavigate(); // Use the useNavigate hook
 
   useEffect(() => {
     axios.get('/musictest/user/session', { withCredentials: true })
@@ -133,6 +159,10 @@ const Cart = () => {
     return Array.from(itemMap.values());
   };
 
+  const handleCheckout = () => {
+    navigate("/checkout");
+  };
+
   const updateCartItem = (cartItemId, updatedItem) => {
     if (updatedItem.cartQuantity === 0) {
       removeCartItem(cartItemId);
@@ -148,7 +178,6 @@ const Cart = () => {
     }
   };
 
-
   const removeCartItem = (cartItemId) => {
     axios.delete(`/musictest/api/cart-items/${cartItemId}`, { withCredentials: true })
       .then(() => {
@@ -158,6 +187,15 @@ const Cart = () => {
         console.error('There was an error removing the cart item!', error);
         setError('There was an error removing the cart item.');
       });
+  };
+
+  const calculateSubtotal = () => {
+    return cartItems.reduce((total, item) => total + item.album.albumPrice * item.cartQuantity, 0);
+  };
+
+  const calculateTotal = () => {
+    const shippingCost = 150;
+    return calculateSubtotal() + shippingCost;
   };
 
   if (loading) {
@@ -174,7 +212,7 @@ const Cart = () => {
         <TopTexts>
           <TopText>Shopping Bag({cartItems.length})</TopText>
         </TopTexts>
-        <TopButton type="filled">CHECKOUT NOW</TopButton>
+        <TopButton type="filled" onClick={handleCheckout}>CHECKOUT NOW</TopButton>
       </Top>
       <Bottom>
         <Info>
@@ -199,15 +237,30 @@ const Cart = () => {
               </ProductDetail>
               <PriceDetail>
                 <ProductAmountContainer>
-                <button onClick={() => updateCartItem(item.cartItemId, { ...item, cartQuantity: item.cartQuantity - 1 })}>-</button>
+                  <button onClick={() => updateCartItem(item.cartItemId, { ...item, cartQuantity: item.cartQuantity - 1 })}>-</button>
                   <ProductAmount>{item.cartQuantity}</ProductAmount>
-                <button onClick={() => updateCartItem(item.cartItemId, { ...item, cartQuantity: item.cartQuantity + 1 })}>+</button>
+                  <button onClick={() => updateCartItem(item.cartItemId, { ...item, cartQuantity: item.cartQuantity + 1 })}>+</button>
                 </ProductAmountContainer>
                 <ProductPrice>₱ {item.album.albumPrice * item.cartQuantity}</ProductPrice>
               </PriceDetail>
             </Product>
           ))}
         </Info>
+        <Summary>
+          <SummaryTitle>ORDER SUMMARY</SummaryTitle>
+          <SummaryItem>
+            <SummaryItemText>Subtotal</SummaryItemText>
+            <SummaryItemPrice>₱ {calculateSubtotal()}</SummaryItemPrice>
+          </SummaryItem>
+          <SummaryItem>
+            <SummaryItemText>Shipping</SummaryItemText>
+            <SummaryItemPrice>₱ 150</SummaryItemPrice>
+          </SummaryItem>
+          <SummaryItem type="total">
+            <SummaryItemText>Total</SummaryItemText>
+            <SummaryItemPrice>₱ {calculateTotal()}</SummaryItemPrice>
+          </SummaryItem>
+        </Summary>
       </Bottom>
     </Container>
   );
