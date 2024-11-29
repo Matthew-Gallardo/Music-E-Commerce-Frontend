@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Announcement from "../components/Announcement";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 const Container = styled.div`
   width: 100vw;
@@ -84,7 +84,12 @@ const Register = () => {
     try {
       const response = await axios.post("/musictest/user/register", form);
       if (response.data) {
-        alert("Registration successful");
+        Swal.fire({
+          title: 'Success!',
+          text: 'Your details have been registered.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
         navigate("/");
       } else {
         alert("Registration failed");

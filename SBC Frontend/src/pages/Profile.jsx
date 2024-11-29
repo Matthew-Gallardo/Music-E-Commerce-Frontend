@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const Container = styled.div`
   padding: 20px;
@@ -64,21 +65,35 @@ const Profile = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleUpdate = (e) => {
     e.preventDefault();
-    axios.put('/musictest/profile/update', user, { withCredentials: true })
-      .then(response => {
-        alert('Profile updated successfully');
-      })
-      .catch(error => {
-        console.error('There was an error updating the profile!', error);
-      });
+  
+    Swal.fire({
+      title: "Do you want to save the changes?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      denyButtonText: `Don't save`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.put('/musictest/profile/update', user, { withCredentials: true })
+          .then(response => {
+            Swal.fire("Saved!", "", "success");
+          })
+          .catch(error => {
+            console.error('There was an error updating the profile!', error);
+            Swal.fire("Error!", "Profile update failed.", "error");
+          });
+      } else if (result.isDenied) {
+        Swal.fire("Changes are not saved", "", "info");
+      }
+    });
   };
 
   return (
     <Container>
       <h1>Profile</h1>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleUpdate}>
         <Input
           type="text"
           name="userFirstname"

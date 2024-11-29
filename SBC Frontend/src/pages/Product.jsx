@@ -6,8 +6,8 @@ import axios from "axios";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Newsletter from "../components/Newsletter";
+import Swal from 'sweetalert2';
 
-// Define styled components
 const Container = styled.div``;
 
 const Wrapper = styled.div`
@@ -171,10 +171,22 @@ const Product = () => {
       const response = await axios.post("/musictest/api/cart-items", data, { withCredentials: true });
       console.log("Item added to cart:", response.data);
       console.log("Full server response:", response);
-    } catch (error) {
-      console.error("Error adding to cart:", error);
+      Swal.fire({
+        title: 'Success!',
+        text: 'Item has been added to your cart.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to add item to cart.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
     }
-  };
 
   if (!product) return <div>Loading...</div>;
 

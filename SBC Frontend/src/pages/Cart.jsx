@@ -146,7 +146,7 @@ const Cart = () => {
   const removeCartItem = (cartItemId) => {
     axios.delete(`/musictest/api/cart-items/${cartItemId}`, { withCredentials: true })
       .then(() => {
-        setCartItems(cartItems.filter(item => item.cartItemId !== cartItemId));
+        setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== cartItemId));
         console.log('Removed cart item with ID:', cartItemId); // Log the removed item ID
       })
       .catch(error => {
