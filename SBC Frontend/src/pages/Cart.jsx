@@ -134,26 +134,20 @@ const Cart = () => {
   };
 
   const updateCartItem = (cartItemId, updatedItem) => {
-    axios.put(`/musictest/api/cart-items/${cartItemId}`, updatedItem, { withCredentials: true })
-      .then(response => {
-        setCartItems(prevItems => prevItems.map(item => item.cartItemId === cartItemId ? response.data : item));
-      })
-      .catch(error => {
-        console.error('There was an error updating the cart item!', error);
-        setError('There was an error updating the cart item.');
-      });
+    if (updatedItem.cartQuantity === 0) {
+      removeCartItem(cartItemId);
+    } else {
+      axios.put(`/musictest/api/cart-items/${cartItemId}`, updatedItem, { withCredentials: true })
+        .then(response => {
+          setCartItems(prevItems => prevItems.map(item => item.cartItemId === cartItemId ? response.data : item));
+        })
+        .catch(error => {
+          console.error('There was an error updating the cart item!', error);
+          setError('There was an error updating the cart item.');
+        });
+    }
   };
 
-  const addCartItem = (newItem) => {
-    axios.post(`/musictest/api/cart-items`, newItem, { withCredentials: true })
-      .then(response => {
-        setCartItems(prevItems => [...prevItems, response.data]);
-      })
-      .catch(error => {
-        console.error('There was an error adding the cart item!', error);
-        setError('There was an error adding the cart item.');
-      });
-  };
 
   const removeCartItem = (cartItemId) => {
     axios.delete(`/musictest/api/cart-items/${cartItemId}`, { withCredentials: true })
@@ -205,12 +199,11 @@ const Cart = () => {
               </ProductDetail>
               <PriceDetail>
                 <ProductAmountContainer>
-                  <button onClick={() => updateCartItem(item.cartItemId, { ...item, cartQuantity: item.cartQuantity + 1 })}>+</button>
+                <button onClick={() => updateCartItem(item.cartItemId, { ...item, cartQuantity: item.cartQuantity - 1 })}>-</button>
                   <ProductAmount>{item.cartQuantity}</ProductAmount>
-                  <button onClick={() => updateCartItem(item.cartItemId, { ...item, cartQuantity: item.cartQuantity - 1 })}>-</button>
+                <button onClick={() => updateCartItem(item.cartItemId, { ...item, cartQuantity: item.cartQuantity + 1 })}>+</button>
                 </ProductAmountContainer>
                 <ProductPrice>₱ {item.album.albumPrice * item.cartQuantity}</ProductPrice>
-                <button onClick={() => removeCartItem(item.cartItemId)}>Remove</button>
               </PriceDetail>
             </Product>
           ))}
