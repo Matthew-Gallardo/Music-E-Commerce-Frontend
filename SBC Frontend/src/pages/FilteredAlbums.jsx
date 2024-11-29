@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { ShoppingCartOutlined, SearchOutlined } from "@mui/icons-material";
@@ -92,51 +92,65 @@ const Icon = styled.div`
   }
 `;
 
-const Search = () => {
-  const location = useLocation();
-  const query = new URLSearchParams(location.search).get("query");
+const FilteredAlbums = ({ type }) => {
+  const { id } = useParams();
   const [albums, setAlbums] = useState([]);
+  const [filterName, setFilterName] = useState("");
 
   useEffect(() => {
     const fetchAlbums = async () => {
       try {
-        const response = await axios.get(`/musictest/album/search?query=${query}`);
+        const response = await axios.get(`/musictest/album/${type}/${id}`);
         setAlbums(response.data);
       } catch (err) {
         console.error("Error fetching albums", err);
+        setAlbums([]);
       }
     };
 
-    if (query) {
-      fetchAlbums();
-    }
-  }, [query]);
+    const fetchFilterName = async () => {
+      try {
+        const response = await axios.get(`/musictest/${type}/${id}`);
+        setFilterName(response.data[`${type}Name`]);
+      } catch (err) {
+        console.error(`Error fetching ${type} name`, err);
+        setFilterName("");
+      }
+    };
+
+    fetchAlbums();
+    fetchFilterName();
+  }, [type, id]);
 
   return (
     <Container>
-      <Title>Related Results for "{query}"</Title>
-      {albums.map((album) => (
-        <Link to={`/product/${album.albumId}`} key={album.albumId}>
-          <AlbumContainer>
-            <Circle />
-            <Image src={album.albumImage} alt={album.albumName} />
-            <TextContainer>
-              <AlbumTitle>{album.albumName}</AlbumTitle>
-              <Artist>{album.artist ? album.artist.artistName : "Unknown Artist"}</Artist>
-            </TextContainer>
-            <Info>
-              <Icon>
-                <ShoppingCartOutlined />
-              </Icon>
-              <Icon>
-                <SearchOutlined />
-              </Icon>
-            </Info>
-          </AlbumContainer>
-        </Link>
-      ))}
+      <Title>Albums {type === "genre" ? `in ${filterName}` : `by ${filterName}`}</Title>
+      {Array.isArray(albums) && albums.length > 0 ? (
+        albums.map((album) => (
+          <Link to={`/product/${album.albumId}`} key={album.albumId}>
+            <AlbumContainer>
+              <Circle />
+              <Image src={album.albumImage} alt={album.albumName} />
+              <TextContainer>
+                <AlbumTitle>{album.albumName}</AlbumTitle>
+                <Artist>{album.artist ? album.artist.artistName : "Unknown Artist"}</Artist>
+              </TextContainer>
+              <Info>
+                <Icon>
+                  <ShoppingCartOutlined />
+                </Icon>
+                <Icon>
+                  <SearchOutlined />
+                </Icon>
+              </Info>
+            </AlbumContainer>
+          </Link>
+        ))
+      ) : (
+        <p>No albums found.</p>
+      )}
     </Container>
   );
 };
 
-export default Search;
+export default FilteredAlbums;

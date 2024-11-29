@@ -50,12 +50,13 @@ const Sidebar = () => {
   }, []);
 
   const handleGenreClick = (genreId) => {
-    navigate(`/albums/genre/${genreId}`);
+    navigate(`/album/genre/${genreId}`);
   };
 
   const handleArtistClick = (artistId) => {
-    navigate(`/albums/artist/${artistId}`);
+    navigate(`/album/artist/${artistId}`);
   };
+  
 
   return (
     <Container>

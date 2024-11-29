@@ -113,7 +113,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
           {!isLoggedIn && <MenuItem onClick={() => navigate("/login")}>SIGN IN</MenuItem>}
           {isLoggedIn && <MenuItem onClick={handleLogout}>LOGOUT</MenuItem>}
           <MenuItem onClick={() => navigate("/cart")}>
-            <Badge badgeContent={4} color="primary">
+            <Badge color="primary">
               <ShoppingCartOutlined />
             </Badge>
           </MenuItem>

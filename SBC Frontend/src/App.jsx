@@ -6,9 +6,10 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Product from './pages/Product';
 import Profile from './pages/Profile';
-import ProductList from './pages/ProductList';
-import Search from './pages/Search'; // Import the Search component
+import Search from './pages/Search'; 
+import FilteredAlbums from './pages/FilteredAlbums'; 
 import Navbar from './components/Navbar';
+
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,6 +29,8 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/search" element={<Search />} /> 
+        <Route path="/album/genre/:id" element={<FilteredAlbums type="genre" />} /> 
+        <Route path="/album/artist/:id" element={<FilteredAlbums type="artist" />} />
         {/* Add other routes here */}
       </Routes>
     </Router>

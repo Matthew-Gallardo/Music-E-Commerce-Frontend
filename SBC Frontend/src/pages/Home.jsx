@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import Products from "../components/Products"; 
 import Footer from "../components/Footer";
-import Slider from "../components/Slider";
+
 
 
 
