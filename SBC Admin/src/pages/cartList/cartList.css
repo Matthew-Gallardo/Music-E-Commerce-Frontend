@@ -31,9 +31,6 @@
 }
 
 
-
-/* cartList.css */
-
 .cartCreateButtonContainer {
   display: flex;
   justify-content: flex-end;
@@ -56,4 +53,9 @@
 
 .cartCreateButton:hover {
   background-color: blue; 
+}
+
+.cartListDelete {
+  color: red;
+  cursor: pointer;
 }

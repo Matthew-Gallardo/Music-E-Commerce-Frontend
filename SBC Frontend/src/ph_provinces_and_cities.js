@@ -468,67 +468,223 @@ var cities = {
 		],			
  }
 
- var City = function() {
+ const countries = [
+    {
+      label: "A",
+      options: [
+        "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan"
+      ]
+    },
+    {
+      label: "Å",
+      options: ["Åland Islands"]
+    },
+    {
+      label: "B",
+      options: [
+        "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia (Plurinational State of)", "Bosnia and Herzegovina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi"
+      ]
+    },
+    {
+      label: "C",
+      options: [
+        "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Caribbean Netherlands", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, Democratic Republic of the", "Cook Islands", "Costa Rica", "Croatia", "Cuba", "Curaçao", "Cyprus", "Czech Republic", "Côte d'Ivoire"
+      ]
+    },
+    {
+      label: "D",
+      options: ["Denmark", "Djibouti", "Dominica", "Dominican Republic"]
+    },
+    {
+      label: "E",
+      options: [
+        "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini (Swaziland)", "Ethiopia"
+      ]
+    },
+    {
+      label: "F",
+      options: [
+        "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "French Guiana", "French Polynesia", "French Southern Territories"
+      ]
+    },
+    {
+      label: "G",
+      options: [
+        "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea-Bissau", "Guyana"
+      ]
+    },
+    {
+      label: "H",
+      options: [
+        "Haiti", "Heard Island and Mcdonald Islands", "Honduras", "Hong Kong", "Hungary"
+      ]
+    },
+    {
+      label: "I",
+      options: [
+        "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy"
+      ]
+    },
+    {
+      label: "J",
+      options: ["Jamaica", "Japan", "Jersey", "Jordan"]
+    },
+    {
+      label: "K",
+      options: [
+        "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kosovo", "Kuwait", "Kyrgyzstan"
+      ]
+    },
+    {
+      label: "L",
+      options: [
+        "Lao People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg"
+      ]
+    },
+    {
+      label: "M",
+      options: [
+        "Macao", "Macedonia North", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar (Burma)"
+      ]
+    },
+    {
+      label: "N",
+      options: [
+        "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway"
+      ]
+    },
+    {
+      label: "O",
+      options: ["Oman"]
+    },
+    {
+      label: "P",
+      options: [
+        "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn Islands", "Poland", "Portugal", "Puerto Rico"
+      ]
+    },
+    {
+      label: "Q",
+      options: ["Qatar"]
+    },
+    {
+      label: "R",
+      options: [
+        "Reunion", "Romania", "Russian Federation", "Rwanda"
+      ]
+    },
+    {
+      label: "S",
+      options: [
+        "Saint Barthelemy", "Saint Helena", "Saint Kitts and Nevis", "Saint Lucia", "Saint Martin", "Saint Pierre and Miquelon", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Serbia and Montenegro", "Seychelles", "Sierra Leone", "Singapore", "Sint Maarten", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Svalbard and Jan Mayen", "Sweden", "Switzerland", "Syria"
+      ]
+    },
+    {
+      label: "T",
+      options: [
+        "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey (Türkiye)", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu"
+      ]
+    },
+    {
+      label: "U",
+      options: [
+        "U.S. Outlying Islands", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan"
+      ]
+    },
+    {
+      label: "V",
+      options: [
+        "Vanuatu", "Vatican City Holy See", "Venezuela", "Vietnam", "Virgin Islands, British", "Virgin Islands, U.S"
+      ]
+    },
+    {
+      label: "W",
+      options: ["Wallis and Futuna", "Western Sahara"]
+    },
+    {
+      label: "Y",
+      options: ["Yemen"]
+    },
+    {
+      label: "Z",
+      options: ["Zambia", "Zimbabwe"]
+    }
+  ];
 
-	this.p = [],this.c = [],this.a = [],this.e = {};
-	window.onerror = function() { return true; }
-	
-	this.getProvinces = function() {
-		for(let province in cities) {
-			this.p.push(province);
-		}
-		return this.p;
-	}
-	this.getCities = function(province) {
-		if(province.length==0) {
-			console.error('Please input province name');
-			return;
-		}
-		for(let i=0;i<=cities[province].length-1;i++) {
-			this.c.push(cities[province][i]);
-		}
-		return this.c;
-	}
-	this.getAllCities = function() {
-		for(let i in cities) {
-			for(let j=0;j<=cities[i].length-1;j++) {
-				this.a.push(cities[i][j]);
-			}
-		}
-		this.a.sort();
-		return this.a;
-	}
-	this.showProvinces = function(element) {
-		var str = '<option selected disabled>Select Province</option>';
-		for(let i in this.getProvinces()) {
-			str+='<option>'+this.p[i]+'</option>';
-		}
-		this.p = [];		
-		document.querySelector(element).innerHTML = '';
-		document.querySelector(element).innerHTML = str;
-		this.e = element;
-		return this;
-	}
-	this.showCities = function(province,element) {
-		var str = '<option selected disabled>Select City / Municipality</option>';
-		var elem = '';
-		if((province.indexOf(".")!==-1 || province.indexOf("#")!==-1)) {
-			elem = province;
-		}
-		else {
-			for(let i in this.getCities(province)) {
-				str+='<option>'+this.c[i]+'</option>';
-			}
-			elem = element;
-		}
-		this.c = [];
-		document.querySelector(elem).innerHTML = '';
-		document.querySelector(elem).innerHTML = str;
-		document.querySelector(this.e).onchange = function() {		
-			var Obj = new City();
-			Obj.showCities(this.value,elem);
-		}
-		return this;
-	}
+  var City = function() {
+    this.p = [], this.c = [], this.a = [], this.e = {};
+    window.onerror = function() { return true; }
+
+    this.getProvinces = function() {
+        for (let province in cities) {
+            this.p.push(province);
+        }
+        return this.p;
+    }
+    this.getCities = function(province) {
+        if (province.length == 0) {
+            console.error('Please input province name');
+            return;
+        }
+        for (let i = 0; i <= cities[province].length - 1; i++) {
+            this.c.push(cities[province][i]);
+        }
+        return this.c;
+    }
+    this.getAllCities = function() {
+        for (let i in cities) {
+            for (let j = 0; j <= cities[i].length - 1; j++) {
+                this.a.push(cities[i][j]);
+            }
+        }
+        this.a.sort();
+        return this.a;
+    }
+    this.showProvinces = function(element) {
+        var str = '<option selected disabled>Select Province</option>';
+        for (let i in this.getProvinces()) {
+            str += '<option>' + this.p[i] + '</option>';
+        }
+        this.p = [];
+        document.querySelector(element).innerHTML = '';
+        document.querySelector(element).innerHTML = str;
+        this.e = element;
+        return this;
+    }
+    this.showCities = function(province, element) {
+        var str = '<option selected disabled>Select City / Municipality</option>';
+        var elem = '';
+        if ((province.indexOf(".") !== -1 || province.indexOf("#") !== -1)) {
+            elem = province;
+        }
+        else {
+            for (let i in this.getCities(province)) {
+                str += '<option>' + this.c[i] + '</option>';
+            }
+            elem = element;
+        }
+        this.c = [];
+        document.querySelector(elem).innerHTML = '';
+        document.querySelector(elem).innerHTML = str;
+        document.querySelector(this.e).onchange = function() {
+            var Obj = new City();
+            Obj.showCities(this.value, elem);
+        }
+        return this;
+    }
+    this.showCountries = function(element) {
+        var str = '<option selected disabled>Select Country</option>';
+        countries.forEach(group => {
+            str += `<optgroup label="${group.label}">`;
+            group.options.forEach(country => {
+                str += `<option value="${country}">${country}</option>`;
+            });
+            str += '</optgroup>';
+        });
+        document.querySelector(element).innerHTML = '';
+        document.querySelector(element).innerHTML = str;
+        return this;
+    }
 }
+
 export default City;
