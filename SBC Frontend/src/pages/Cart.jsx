@@ -190,7 +190,8 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    navigate("/checkout");
+    const totalPrice = calculateSubtotal() + 150;
+    navigate("/checkout", { state: { totalPrice } });
   };
 
   const updateCartItem = (cartItemId, updatedItem) => {

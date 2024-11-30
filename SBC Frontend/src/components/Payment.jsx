@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const PaymentContainer = styled.div`
   display: flex;
@@ -15,6 +17,8 @@ const PaypalButtonContainer = styled.div`
 
 export default function Payment() {
   const paypal = useRef();
+  const location = useLocation();
+  const { totalPrice } = location.state;
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -27,10 +31,10 @@ export default function Payment() {
               intent: "CAPTURE",
               purchase_units: [
                 {
-                  description: "Cool looking table",
+                  description: "Total Amount",
                   amount: {
                     currency_code: "CAD",
-                    value: 650.0,
+                    value: totalPrice,
                   },
                 },
               ],
@@ -45,6 +49,18 @@ export default function Payment() {
               icon: 'success',
               confirmButtonText: 'OK'
             });
+
+            const sessionResponse = await axios.get("/musictest/user/session", { withCredentials: true });
+            const { userId } = sessionResponse.data;
+
+            const transaction = {
+              transactionTotalAmount: totalPrice,
+              transactionStatus: 'Completed',
+              transactionDate: new Date().toISOString(),
+            };
+
+            await axios.post(`/musictest/api/transactions?userId=${userId}`, transaction, { withCredentials: true });
+            await axios.delete(`/musictest/api/cart-items/user/${userId}`, { withCredentials: true });
           },
           onError: (err) => {
             console.log(err);
@@ -59,7 +75,7 @@ export default function Payment() {
         .render(paypal.current);
     });
     document.body.appendChild(script);
-  }, []);
+  }, [totalPrice]);
 
   return (
     <PaymentContainer>
