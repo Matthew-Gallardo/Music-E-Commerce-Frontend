@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
+import Newsletter from "../components/Newsletter";
+import Announcement from "../components/Announcement";
 
 const Container = styled.div`
   padding: 20px;
@@ -19,7 +22,7 @@ const TopButton = styled.button`
   cursor: pointer;
   border: ${(props) => (props.type === "filled" ? "none" : "1px solid black")};
   background-color: ${(props) =>
-    props.type === "filled" ? "black" : "transparent"};
+    props.type === "filled" ? "teal" : "transparent"};
   color: ${(props) => (props.type === "filled" ? "white" : "black")};
 `;
 
@@ -338,7 +341,10 @@ const Cart = () => {
           </SummaryItem>
         </Summary>
       </Bottom>
+    
     </Container>
+
+
   );
 };
 

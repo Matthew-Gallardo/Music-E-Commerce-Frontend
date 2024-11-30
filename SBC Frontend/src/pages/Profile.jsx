@@ -11,7 +11,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #2C3B55;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 800px;
@@ -20,7 +20,7 @@ const Container = styled.div`
 
 const Title = styled.h1`
   margin-bottom: 20px;
-  color: #333;
+  color: #CAFFB9;
 `;
 
 const Form = styled.form`
@@ -38,7 +38,7 @@ const FormGroup = styled.div`
 
 const Label = styled.label`
   font-weight: bold;
-  color: #555;
+  color: #CAFFB9;
 `;
 
 const Input = styled.input`
@@ -72,7 +72,7 @@ const Select = styled.select`
 const Button = styled.button`
   padding: 10px;
   font-size: 16px;
-  background-color: #007bff;
+  background-color: teal;
   color: white;
   border: none;
   border-radius: 5px;

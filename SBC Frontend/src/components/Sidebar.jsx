@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   width: 18%;
-  background-color: #fcf5f5;
+  background-color: #EFF1F4;
   padding: 10px;
   display: flex;
   flex-direction: column;

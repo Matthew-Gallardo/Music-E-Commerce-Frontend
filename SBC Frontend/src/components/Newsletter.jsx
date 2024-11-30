@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 
 const Container = styled.div`
-  height: 60vh;
-  background-color: #fcf5f5;
+  height: 40vh;
+  background-color: #2C3B55;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,14 +13,14 @@ const Container = styled.div`
 const Title = styled.h1`
   font-size: 70px;
   margin-bottom: 20px;
+  color:#CAFFB9;
 `;
 
 const Desc = styled.div`
   font-size: 24px;
   font-weight: 300;
   margin-bottom: 20px;
-
-
+  color: white;
 `;
 
 const InputContainer = styled.div`
@@ -30,7 +30,6 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: space-between;
   border: 1px solid lightgray;
-
 `;
 
 const Input = styled.input`

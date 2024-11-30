@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Badge, InputBase } from "@mui/material";
-import { AccountCircleOutlined,Search, ShoppingCartOutlined } from "@mui/icons-material";
+import {
+  AccountCircleOutlined,
+  Search,
+  ShoppingCartOutlined,
+} from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const Container = styled.div`
-  height: 60px;
+  height: 70px;
+  background-color: #2c3b55;
 `;
 
 const Wrapper = styled.div`
@@ -22,6 +27,13 @@ const Left = styled.div`
   align-items: center;
 `;
 
+const Logo = styled.h1`
+  font-weight: bold;
+  color: #caffb9;
+  margin-left: 20px;
+  cursor: pointer;
+`;
+
 const SearchContainer = styled.div`
   border: 0.5px solid lightgray;
   display: flex;
@@ -35,16 +47,16 @@ const SearchContainer = styled.div`
 const Input = styled(InputBase)`
   border: none;
   width: 100%;
+  color: #eff1f4;
+
+  &::placeholder {
+    color: #eff1f4;
+  }
 `;
 
 const Center = styled.div`
   flex: 1;
   text-align: center;
-`;
-
-const Logo = styled.h1`
-  font-weight: bold;
-  cursor: pointer;
 `;
 
 const Right = styled.div`
@@ -58,6 +70,7 @@ const MenuItem = styled.div`
   font-size: 14px;
   cursor: pointer;
   margin-left: 25px;
+  color: #eff1f4;
 `;
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
@@ -90,40 +103,50 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   return (
     <Container>
       <Wrapper>
-      <Left>
-  <Logo onClick={() => navigate("/")}>Music App</Logo>
-</Left>
-<Center>
-  {isLoggedIn && (
-    <SearchContainer>
-      <form onSubmit={handleSearch} style={{ display: "flex", alignItems: "center", width: "100%" }}>
-        <Input
-          placeholder="Search"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-        />
-        <button type="submit" style={{ background: "none", border: "none", cursor: "pointer" }}>
-          <Search style={{ color: "gray", fontSize: 16 }} />
-        </button>
-      </form>
-    </SearchContainer>
+        <Left>
+          <Logo onClick={() => navigate("/")}>SBC Music</Logo>
+        </Left>
+        <Center>
+          {isLoggedIn && (
+            <SearchContainer>
+              <form
+                onSubmit={handleSearch}
+                style={{ display: "flex", alignItems: "center", width: "100%" }}
+              >
+                <Input
+                  placeholder="Search"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                />
+                <button
+                  type="submit"
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Search style={{ color: "white", fontSize: 16 }} />
+                </button>
+              </form>
+            </SearchContainer>
           )}
         </Center>
         <Right>
-          {!isLoggedIn && location.pathname !== '/register' && (
+          {!isLoggedIn && location.pathname !== "/register" && (
             <MenuItem onClick={() => navigate("/register")}>REGISTER</MenuItem>
           )}
-          {!isLoggedIn && location.pathname === '/register' && (
+          {!isLoggedIn && location.pathname === "/register" && (
             <MenuItem onClick={() => navigate("/login")}>LOGIN</MenuItem>
           )}
           {isLoggedIn && <MenuItem onClick={handleLogout}>LOGOUT</MenuItem>}
           <MenuItem onClick={() => navigate("/cart")}>
             <Badge color="primary">
-              <ShoppingCartOutlined />
+              <ShoppingCartOutlined style={{ color: "white" }} />
             </Badge>
           </MenuItem>
           <MenuItem onClick={() => navigate("/profile")}>
-            <AccountCircleOutlined />
+            <AccountCircleOutlined style={{ color: "white" }} />
           </MenuItem>
         </Right>
       </Wrapper>

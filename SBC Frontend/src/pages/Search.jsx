@@ -3,6 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { ShoppingCartOutlined, SearchOutlined } from "@mui/icons-material";
+import Footer from "../components/Footer";
 
 const Container = styled.div`
   display: flex;
@@ -113,29 +114,32 @@ const Search = () => {
   }, [query]);
 
   return (
-    <Container>
-      <Title>Related Results for "{query}"</Title>
-      {albums.map((album) => (
-        <Link to={`/product/${album.albumId}`} key={album.albumId}>
-          <AlbumContainer>
-            <Circle />
-            <Image src={album.albumImage} alt={album.albumName} />
-            <TextContainer>
-              <AlbumTitle>{album.albumName}</AlbumTitle>
-              <Artist>{album.artist ? album.artist.artistName : "Unknown Artist"}</Artist>
-            </TextContainer>
-            <Info>
-              <Icon>
-                <ShoppingCartOutlined />
-              </Icon>
-              <Icon>
-                <SearchOutlined />
-              </Icon>
-            </Info>
-          </AlbumContainer>
-        </Link>
-      ))}
-    </Container>
+    <>
+      <Container>
+        <Title>Related Results for "{query}"</Title>
+        {albums.map((album) => (
+          <Link to={`/product/${album.albumId}`} key={album.albumId}>
+            <AlbumContainer>
+              <Circle />
+              <Image src={album.albumImage} alt={album.albumName} />
+              <TextContainer>
+                <AlbumTitle>{album.albumName}</AlbumTitle>
+                <Artist>{album.artist ? album.artist.artistName : "Unknown Artist"}</Artist>
+              </TextContainer>
+              <Info>
+                <Icon>
+                  <ShoppingCartOutlined />
+                </Icon>
+                <Icon>
+                  <SearchOutlined />
+                </Icon>
+              </Info>
+            </AlbumContainer>
+          </Link>
+        ))}
+      </Container>
+      <Footer />
+    </>
   );
 };
 

@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar";
 import Products from "../components/Products"; 
 import Footer from "../components/Footer";
 import Announcement from "../components/Announcement";
+import Newsletter from "../components/Newsletter";
 
 const Container = styled.div`
   display: flex;
@@ -64,6 +65,7 @@ const Home = () => {
           </MainContent>
         </MainContentWrapper>
       </ContentWrapper>
+      <Newsletter/>
       <Footer />
     </Container>
   );

@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { ShoppingCartOutlined, SearchOutlined } from "@mui/icons-material";
+import Footer from "../components/Footer";
 
 const Container = styled.div`
   display: flex;
@@ -123,6 +124,7 @@ const FilteredAlbums = ({ type }) => {
   }, [type, id]);
 
   return (
+    <>
     <Container>
       <Title>Albums {type === "genre" ? `in ${filterName}` : `by ${filterName}`}</Title>
       {Array.isArray(albums) && albums.length > 0 ? (
@@ -149,7 +151,10 @@ const FilteredAlbums = ({ type }) => {
       ) : (
         <p>No albums found.</p>
       )}
+    
     </Container>
+      <Footer/>
+      </>
   );
 };
 

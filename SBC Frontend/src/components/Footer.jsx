@@ -9,10 +9,9 @@ import {
 } from "@mui/icons-material";
 import styled from "styled-components";
 
-
 const Container = styled.div`
   display: flex;
-
+  background-color: #2c3b55;
 `;
 
 const Left = styled.div`
@@ -22,10 +21,12 @@ const Left = styled.div`
   padding: 20px;
 `;
 
-const Logo = styled.h1``;
-
+const Logo = styled.img`
+ width: 150px;
+`;
 const Desc = styled.p`
   margin: 20px 0px;
+  color: #EFF1F4;
 `;
 
 const SocialContainer = styled.div`
@@ -47,11 +48,12 @@ const SocialIcon = styled.div`
 const Center = styled.div`
   flex: 1;
   padding: 20px;
-
+  color: #EFF1F4;
 `;
 
 const Title = styled.h3`
   margin-bottom: 30px;
+  color: #CAFFB9;
 `;
 
 const List = styled.ul`
@@ -70,30 +72,31 @@ const ListItem = styled.li`
 const Right = styled.div`
   flex: 1;
   padding: 20px;
-
-
 `;
 
 const ContactItem = styled.div`
   margin-bottom: 20px;
   display: flex;
   align-items: center;
+   color: #EFF1F4;
 `;
 const Payment = styled.img`
   margin-top: -20px;
-  width: 20%;  
-  height: auto;  
+  width: 20%;
+  height: auto;
 `;
-
 
 const Footer = () => {
   return (
     <Container>
       <Left>
-        <Logo>SBC.</Logo>
+        <Logo
+          src="https://res.cloudinary.com/do3op0083/image/upload/v1732948213/sbcmusic/zcxlg1pefbdvy86tetgt.jpg"
+          alt="SBC Music Logo"
+        />
         <Desc>
-     blahbalahblahlabl  ahlals hasdjakgnsagns agdkjdsangkjsa dngsagkjnds 
-     agndsangjsa ndjgadgakj gdnangagddsa
+          Your one-stop destination for all your music needs. Follow us on
+          social media for the latest updates and offers.
         </Desc>
         <SocialContainer>
           <SocialIcon color="3B5999">
@@ -126,13 +129,15 @@ const Footer = () => {
       <Right>
         <Title>Contact</Title>
         <ContactItem>
-          <Room style={{marginRight:"10px"}}/> Keyland Arnaiz Building, 849 Antonio Arnaiz Ave, Legazpi Village, Makati, Metro Manila
+          <Room style={{ marginRight: "10px",color: "white" }} /> Keyland Arnaiz Building, 849
+          Antonio Arnaiz Ave, Legazpi Village, Makati, Metro Manila
         </ContactItem>
         <ContactItem>
-          <Phone style={{marginRight:"10px"}}/> +1 234 56 78
+          <Phone style={{ marginRight: "10px",color: "white" }} /> +1 234 56 78
         </ContactItem>
         <ContactItem>
-          <MailOutline style={{marginRight:"10px"}} /> MGallardo@securitybank.com.ph
+          <MailOutline style={{ marginRight: "10px",color: "white" }} />{" "}
+          MGallardo@securitybank.com.ph
         </ContactItem>
         <Payment src="https://res.cloudinary.com/do3op0083/image/upload/f_auto,q_auto/v1/SBC%20Capstone/stripe" />
       </Right>
