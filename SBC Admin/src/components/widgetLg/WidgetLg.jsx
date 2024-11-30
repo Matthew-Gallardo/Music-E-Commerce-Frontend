@@ -40,7 +40,7 @@ export default function WidgetLg() {
               </td>
               <td className="widgetLgArtist">{album.artist.artistName}</td>
               <td className="widgetLgGenre">{album.genre.genreName}</td>
-              <td className="widgetLgPrice">P{album.albumPrice.toFixed(2)}</td>
+              <td className="widgetLgPrice">₱{album.albumPrice.toFixed(2)}</td>
               <td className="widgetLgQty">{album.albumQty}</td>
             </tr>
           ))}

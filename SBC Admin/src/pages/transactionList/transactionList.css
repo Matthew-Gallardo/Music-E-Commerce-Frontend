@@ -1,0 +1,56 @@
+.transactionList {
+  flex: 4;
+}
+
+.transactionListUser {
+  display: flex;
+  align-items: center;
+}
+
+.transactionListImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.transactionListEdit{
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: #3bb077;
+    color: white;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.transactionListDelete{
+    color: red;
+    cursor: pointer;
+}
+
+
+.transactionCreateButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.transactionCreateButton {
+  background-color: darkblue; 
+  border: none; 
+  color: white; 
+  padding: 10px 20px; 
+  text-align: center; 
+  text-decoration: none; 
+  display: inline-block;
+  font-size: 16px; 
+  cursor: pointer; 
+  border-radius: 5px; 
+  transition: background-color 0.3s; 
+}
+
+.transactionCreateButton:hover {
+  background-color: blue; 
+}

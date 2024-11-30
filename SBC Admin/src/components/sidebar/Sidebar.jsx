@@ -73,14 +73,18 @@ export default function Sidebar() {
                 Tracks
               </li>
             </Link>
+            <Link to="/transactions" className="link">
             <li className="sidebarListItem">
               <AttachMoneyOutlined className="sidebarIcon" />
               Orders
             </li>
+            </Link>
+            <Link to="/carts" className="link">
             <li className="sidebarListItem">
               <ShoppingCartOutlined className="sidebarIcon" />
               Shopping Carts
             </li>
+            </Link>
           </ul>
         </div>
         <div className="sidebarMenu">

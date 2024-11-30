@@ -18,6 +18,8 @@ import NewArtist from "./pages/newArtist/newArtist";
 import Track from "./pages/track/Track"
 import TrackList from "./pages/trackList/TrackList";
 import NewTrack from "./pages/newTrack/newTrack";
+import CartList from "./pages/cartList/cartList";
+import TransactionList from "./pages/transactionList/TransactionList";
 
 
 
@@ -44,6 +46,8 @@ function App() {
           <Route path="/track/:trackId" element={<Track/>} />
           <Route path="/tracks" element={<TrackList />} />
           <Route path="/newtrack" element={<NewTrack />} />
+          <Route path="/carts" element={<CartList />} />
+          <Route path="/transactions" element={<TransactionList />} />
         </Routes>
       </div>
     </Router>

@@ -6,3 +6,22 @@
     display: flex;
     margin: 20px;
 }
+
+.homeSalesContainer {
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .homeSalesTitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .homeSalesAmount {
+    font-size: 32px;
+    font-weight: bold;
+    color: #3bb077;
+  }
