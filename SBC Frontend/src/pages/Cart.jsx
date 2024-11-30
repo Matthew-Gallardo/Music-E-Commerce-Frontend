@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   padding: 20px;
@@ -17,9 +17,10 @@ const TopButton = styled.button`
   padding: 10px;
   font-weight: 600;
   cursor: pointer;
-  border: ${(props) => (props.type === 'filled' ? 'none' : '1px solid black')};
-  background-color: ${(props) => (props.type === 'filled' ? 'black' : 'transparent')};
-  color: ${(props) => (props.type === 'filled' ? 'white' : 'black')};
+  border: ${(props) => (props.type === "filled" ? "none" : "1px solid black")};
+  background-color: ${(props) =>
+    props.type === "filled" ? "black" : "transparent"};
+  color: ${(props) => (props.type === "filled" ? "white" : "black")};
 `;
 
 const TopTexts = styled.div``;
@@ -88,6 +89,24 @@ const ProductAmount = styled.div`
   margin: 5px;
 `;
 
+const Button = styled.button`
+  background-color: #f0f0f0;
+  border: none;
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+
+  &:active {
+    background-color: #d0d0d0;
+  }
+`;
+
 const ProductPrice = styled.div`
   font-size: 30px;
   font-weight: 200;
@@ -99,6 +118,7 @@ const Summary = styled.div`
   border-radius: 10px;
   padding: 20px;
   height: 50vh;
+  margin-top: 20px;
 `;
 
 const SummaryTitle = styled.h1`
@@ -109,8 +129,8 @@ const SummaryItem = styled.div`
   margin: 30px 0px;
   display: flex;
   justify-content: space-between;
-  font-weight: ${(props) => (props.type === 'total' ? '500' : '400')};
-  font-size: ${(props) => (props.type === 'total' ? '24px' : '18px')};
+  font-weight: ${(props) => (props.type === "total" ? "500" : "400")};
+  font-size: ${(props) => (props.type === "total" ? "24px" : "18px")};
 `;
 
 const SummaryItemText = styled.span``;
@@ -122,33 +142,43 @@ const Cart = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cartId, setCartId] = useState(null);
-  const navigate = useNavigate(); // Use the useNavigate hook
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('/musictest/user/session', { withCredentials: true })
-      .then(response => {
+    fetchCartItems();
+  }, []);
+
+  const fetchCartItems = () => {
+    console.log("Fetching cart items...");
+    axios
+      .get("/musictest/user/session", { withCredentials: true })
+      .then((response) => {
         const { userId, cartId } = response.data;
-        console.log('User ID:', userId);
-        console.log('Cart ID:', cartId);
+        console.log("User ID:", userId);
+        console.log("Cart ID:", cartId);
         setCartId(cartId);
-        return axios.get(`/musictest/api/carts/${cartId}`, { withCredentials: true });
+        return axios.get(`/musictest/api/carts/${cartId}`, {
+          withCredentials: true,
+        });
       })
-      .then(response => {
-        const aggregatedItems = aggregateCartItems(response.data.cartItems || []);
+      .then((response) => {
+        const aggregatedItems = aggregateCartItems(
+          response.data.cartItems || []
+        );
         setCartItems(aggregatedItems);
-        console.log('Aggregated Cart Items:', aggregatedItems);
+        console.log("Aggregated Cart Items:", aggregatedItems);
         setLoading(false);
       })
-      .catch(error => {
-        console.error('There was an error fetching the cart items!', error);
-        setError('There was an error fetching the cart items.');
+      .catch((error) => {
+        console.error("There was an error fetching the cart items!", error);
+        setError("There was an error fetching the cart items.");
         setLoading(false);
       });
-  }, []);
+  };
 
   const aggregateCartItems = (items) => {
     const itemMap = new Map();
-    items.forEach(item => {
+    items.forEach((item) => {
       const albumId = item.album.albumId;
       if (itemMap.has(albumId)) {
         itemMap.get(albumId).cartQuantity += item.cartQuantity;
@@ -164,38 +194,54 @@ const Cart = () => {
   };
 
   const updateCartItem = (cartItemId, updatedItem) => {
+    console.log("Updating cart item:", cartItemId, updatedItem);
     if (updatedItem.cartQuantity === 0) {
-      removeCartItem(cartItemId);
+      setCartItems((prevItems) =>
+        prevItems.filter((item) => item.cartItemId !== cartItemId)
+      ); 
+      removeCartItem(cartItemId); 
     } else {
-      axios.put(`/musictest/api/cart-items/${cartItemId}`, updatedItem, { withCredentials: true })
-        .then(response => {
-          setCartItems(prevItems => prevItems.map(item => item.cartItemId === cartItemId ? response.data : item));
+      axios
+        .put(`/musictest/api/cart-items/${cartItemId}`, updatedItem, {
+          withCredentials: true,
         })
-        .catch(error => {
-          console.error('There was an error updating the cart item!', error);
-          setError('There was an error updating the cart item.');
+        .then((response) => {
+          setCartItems((prevItems) =>
+            prevItems.map((item) =>
+              item.cartItemId === cartItemId ? response.data : item
+            )
+          );
+        })
+        .catch((error) => {
+          console.error("There was an error updating the cart item!", error);
+          setError("There was an error updating the cart item.");
         });
     }
   };
 
   const removeCartItem = (cartItemId) => {
-    axios.delete(`/musictest/api/cart-items/${cartItemId}`, { withCredentials: true })
-      .then(() => {
-        setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== cartItemId));
+    console.log("Removing cart item:", cartItemId);
+    axios
+      .delete(`/musictest/api/cart-items/${cartItemId}`, {
+        withCredentials: true,
       })
-      .catch(error => {
-        console.error('There was an error removing the cart item!', error);
-        setError('There was an error removing the cart item.');
+      .then(() => {
+        console.log("Cart item removed:", cartItemId);
+        setCartItems((prevItems) =>
+          prevItems.filter((item) => item.cartItemId !== cartItemId)
+        );
+      })
+      .catch((error) => {
+        console.error("There was an error removing the cart item!", error);
+        setError("There was an error removing the cart item.");
       });
   };
 
   const calculateSubtotal = () => {
-    return cartItems.reduce((total, item) => total + item.album.albumPrice * item.cartQuantity, 0);
-  };
-
-  const calculateTotal = () => {
-    const shippingCost = 150;
-    return calculateSubtotal() + shippingCost;
+    return cartItems.reduce(
+      (total, item) => total + item.album.albumPrice * item.cartQuantity,
+      0
+    );
   };
 
   if (loading) {
@@ -212,11 +258,13 @@ const Cart = () => {
         <TopTexts>
           <TopText>Shopping Bag({cartItems.length})</TopText>
         </TopTexts>
-        <TopButton type="filled" onClick={handleCheckout}>CHECKOUT NOW</TopButton>
+        <TopButton type="filled" onClick={handleCheckout}>
+          CHECKOUT NOW
+        </TopButton>
       </Top>
       <Bottom>
         <Info>
-          {cartItems.map(item => (
+          {cartItems.map((item) => (
             <Product key={item.cartItemId}>
               <ProductDetail>
                 <Image src={item.album.albumImage} />
@@ -231,17 +279,40 @@ const Cart = () => {
                     <b>Genre:</b> {item.album.genre.genreName}
                   </ProductGenre>
                   <ProductTracks>
-                    <b>Tracks:</b> {item.album.tracks.map(track => track.trackName).join(', ')}
+                    <b>Tracks:</b>{" "}
+                    {item.album.tracks
+                      .map((track) => track.trackName)
+                      .join(", ")}
                   </ProductTracks>
                 </Details>
               </ProductDetail>
               <PriceDetail>
                 <ProductAmountContainer>
-                  <button onClick={() => updateCartItem(item.cartItemId, { ...item, cartQuantity: item.cartQuantity - 1 })}>-</button>
+                  <Button
+                    onClick={() =>
+                      updateCartItem(item.cartItemId, {
+                        ...item,
+                        cartQuantity: item.cartQuantity - 1,
+                      })
+                    }
+                  >
+                    -
+                  </Button>
                   <ProductAmount>{item.cartQuantity}</ProductAmount>
-                  <button onClick={() => updateCartItem(item.cartItemId, { ...item, cartQuantity: item.cartQuantity + 1 })}>+</button>
+                  <Button
+                    onClick={() =>
+                      updateCartItem(item.cartItemId, {
+                        ...item,
+                        cartQuantity: item.cartQuantity + 1,
+                      })
+                    }
+                  >
+                    +
+                  </Button>
                 </ProductAmountContainer>
-                <ProductPrice>₱ {item.album.albumPrice * item.cartQuantity}</ProductPrice>
+                <ProductPrice>
+                  ₱ {(item.album.albumPrice * item.cartQuantity).toFixed(2)}
+                </ProductPrice>
               </PriceDetail>
             </Product>
           ))}
@@ -250,15 +321,19 @@ const Cart = () => {
           <SummaryTitle>ORDER SUMMARY</SummaryTitle>
           <SummaryItem>
             <SummaryItemText>Subtotal</SummaryItemText>
-            <SummaryItemPrice>₱ {calculateSubtotal()}</SummaryItemPrice>
+            <SummaryItemPrice>
+              ₱ {calculateSubtotal().toFixed(2)}
+            </SummaryItemPrice>
           </SummaryItem>
           <SummaryItem>
             <SummaryItemText>Shipping</SummaryItemText>
-            <SummaryItemPrice>₱ 150</SummaryItemPrice>
+            <SummaryItemPrice>₱ 150.00</SummaryItemPrice>
           </SummaryItem>
           <SummaryItem type="total">
             <SummaryItemText>Total</SummaryItemText>
-            <SummaryItemPrice>₱ {calculateTotal()}</SummaryItemPrice>
+            <SummaryItemPrice>
+              ₱ {(parseFloat(calculateSubtotal()) + 150).toFixed(2)}
+            </SummaryItemPrice>
           </SummaryItem>
         </Summary>
       </Bottom>

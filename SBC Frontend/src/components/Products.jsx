@@ -8,7 +8,7 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
-const Products = () => {
+const Products = ({ sortOrder }) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -25,10 +25,20 @@ const Products = () => {
     fetchProducts();
   }, []);
 
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortOrder === "asc") {
+      return a.albumPrice - b.albumPrice;
+    } else if (sortOrder === "desc") {
+      return b.albumPrice - a.albumPrice;
+    } else {
+      return 0;
+    }
+  });
+
   return (
     <Container>
-      {products.map((item) => (
-        <Product item={item} key={item.id} />
+      {sortedProducts.map((item) => (
+        <Product item={item} key={item.albumId} />
       ))}
     </Container>
   );

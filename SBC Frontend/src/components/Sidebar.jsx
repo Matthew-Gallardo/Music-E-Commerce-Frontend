@@ -62,20 +62,26 @@ const Sidebar = () => {
     <Container>
       <SectionTitle>Genres</SectionTitle>
       <GenreList>
-        {genres.map((genre) => (
-          <GenreItem key={genre.genreId} onClick={() => handleGenreClick(genre.genreId)}>
-            {genre.genreName}
-          </GenreItem>
-        ))}
+        {genres
+          .slice()
+          .sort((a, b) => a.genreName.localeCompare(b.genreName))
+          .map((genre) => (
+            <GenreItem key={genre.genreId} onClick={() => handleGenreClick(genre.genreId)}>
+              {genre.genreName}
+            </GenreItem>
+          ))}
       </GenreList>
 
       <SectionTitle>Artists</SectionTitle>
       <GenreList>
-        {artists.map((artist) => (
-          <GenreItem key={artist.artistId} onClick={() => handleArtistClick(artist.artistId)}>
-            {artist.artistName}
-          </GenreItem>
-        ))}
+        {artists
+          .slice()
+          .sort((a, b) => a.artistName.localeCompare(b.artistName))
+          .map((artist) => (
+            <GenreItem key={artist.artistId} onClick={() => handleArtistClick(artist.artistId)}>
+              {artist.artistName}
+            </GenreItem>
+          ))}
       </GenreList>
     </Container>
   );

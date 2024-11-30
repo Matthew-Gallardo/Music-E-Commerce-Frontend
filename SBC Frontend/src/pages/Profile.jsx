@@ -2,18 +2,65 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import City from '../ph_provinces_and_cities'
+import Footer from '../components/Footer';
+import Announcement from '../components/Announcement';
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 40px auto;
+`;
+
+const Title = styled.h1`
+  margin-bottom: 20px;
+  color: #333;
 `;
 
 const Form = styled.form`
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 15px;
+  width: 100%;
+`;
+
+const FormGroup = styled.div`
+  flex: 1 1 45%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Label = styled.label`
+  font-weight: bold;
+  color: #555;
 `;
 
 const Input = styled.input`
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+const TextArea = styled.textarea`
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+`;
+
+const Select = styled.select`
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -30,6 +77,11 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 `;
 
 const Profile = () => {
@@ -55,6 +107,10 @@ const Profile = () => {
       .catch(error => {
         console.error('There was an error fetching the user profile!', error);
       });
+
+    const city = new City();
+    city.showProvinces('#userState');
+    city.showCities('#userCity');
   }, []);
 
   const handleChange = (e) => {
@@ -91,89 +147,138 @@ const Profile = () => {
   };
 
   return (
+    <>
+        <Announcement/>
     <Container>
-      <h1>Profile</h1>
+  
+      <Title>Profile</Title>
       <Form onSubmit={handleUpdate}>
-        <Input
-          type="text"
-          name="userFirstname"
-          value={user.userFirstname}
-          onChange={handleChange}
-          placeholder="First Name"
-        />
-        <Input
-          type="text"
-          name="userLastname"
-          value={user.userLastname}
-          onChange={handleChange}
-          placeholder="Last Name"
-        />
-        <Input
-          type="email"
-          name="userEmail"
-          value={user.userEmail}
-          onChange={handleChange}
-          placeholder="Email"
-        />
-        <Input
-          type="text"
-          name="userMobile"
-          value={user.userMobile}
-          onChange={handleChange}
-          placeholder="Mobile"
-        />
-        <Input
-          type="text"
-          name="userStreet"
-          value={user.userStreet}
-          onChange={handleChange}
-          placeholder="Street"
-        />
-        <Input
-          type="text"
-          name="userCity"
-          value={user.userCity}
-          onChange={handleChange}
-          placeholder="City"
-        />
-        <Input
-          type="text"
-          name="userState"
-          value={user.userState}
-          onChange={handleChange}
-          placeholder="State"
-        />
-        <Input
-          type="text"
-          name="userZipcode"
-          value={user.userZipcode}
-          onChange={handleChange}
-          placeholder="Zipcode"
-        />
-        <Input
-          type="text"
-          name="userCountry"
-          value={user.userCountry}
-          onChange={handleChange}
-          placeholder="Country"
-        />
-        <Input
-          type="text"
-          name="userBillingAddress"
-          value={user.userBillingAddress}
-          onChange={handleChange}
-          placeholder="Billing Address"
-        />
-        <Input
-          type="text"
-          name="userShippingAddress"
-          value={user.userShippingAddress}
-          onChange={handleChange}
-          placeholder="Shipping Address"
-        />
+        <FormGroup>
+          <Label htmlFor="userFirstname">First Name</Label>
+          <Input
+            type="text"
+            id="userFirstname"
+            name="userFirstname"
+            value={user.userFirstname}
+            onChange={handleChange}
+            placeholder="First Name"
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="userLastname">Last Name</Label>
+          <Input
+            type="text"
+            id="userLastname"
+            name="userLastname"
+            value={user.userLastname}
+            onChange={handleChange}
+            placeholder="Last Name"
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="userEmail">Email</Label>
+          <Input
+            type="email"
+            id="userEmail"
+            name="userEmail"
+            value={user.userEmail}
+            onChange={handleChange}
+            placeholder="Email"
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="userMobile">Mobile</Label>
+          <Input
+            type="text"
+            id="userMobile"
+            name="userMobile"
+            value={user.userMobile}
+            onChange={handleChange}
+            placeholder="Mobile"
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="userStreet">Street</Label>
+          <Input
+            type="text"
+            id="userStreet"
+            name="userStreet"
+            value={user.userStreet}
+            onChange={handleChange}
+            placeholder="Street"
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="userState">State</Label>
+          <Select
+            id="userState"
+            name="userState"
+            value={user.userState}
+            onChange={handleChange}
+          >
+            <option value="">Select state</option>
+          </Select>
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="userCity">City</Label>
+          <Select
+            id="userCity"
+            name="userCity"
+            value={user.userCity}
+            onChange={handleChange}
+          >
+            <option value="">Select city</option>
+          </Select>
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="userZipcode">Zipcode</Label>
+          <Input
+            type="text"
+            id="userZipcode"
+            name="userZipcode"
+            value={user.userZipcode}
+            onChange={handleChange}
+            placeholder="Zipcode"
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="userCountry">Country</Label>
+          <Input
+            type="text"
+            id="userCountry"
+            name="userCountry"
+            value={user.userCountry}
+            onChange={handleChange}
+            placeholder="Country"
+          />
+        </FormGroup>
+        <FormGroup style={{ flex: '1 1 100%' }}>
+          <Label htmlFor="userBillingAddress">Billing Address</Label>
+          <TextArea
+            id="userBillingAddress"
+            name="userBillingAddress"
+            value={user.userBillingAddress}
+            onChange={handleChange}
+            placeholder="Billing Address"
+            rows="4"
+          />
+        </FormGroup>
+        <FormGroup style={{ flex: '1 1 100%' }}>
+          <Label htmlFor="userShippingAddress">Shipping Address</Label>
+          <TextArea
+            id="userShippingAddress"
+            name="userShippingAddress"
+            value={user.userShippingAddress}
+            onChange={handleChange}
+            placeholder="Shipping Address"
+            rows="4"
+          />
+        </FormGroup>
         <Button type="submit">Update Profile</Button>
       </Form>
     </Container>
+    <Footer/>
+    </>
   );
 };
 

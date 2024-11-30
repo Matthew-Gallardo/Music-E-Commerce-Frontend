@@ -67,6 +67,11 @@ const Artist = styled.p`
   font-size: 14px;
   color: #777;
 `;
+const Price = styled.p`
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+`;
 
 const Icon = styled.div`
   width: 40px;
@@ -86,13 +91,19 @@ const Icon = styled.div`
 
 const Product = ({ item }) => {
   return (
-    <Link to={`/product/${item.albumId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+    <Link
+      to={`/product/${item.albumId}`}
+      style={{ textDecoration: "none", color: "inherit" }}
+    >
       <Container>
         <Circle />
         <Image src={item.albumImage} alt={item.albumName} />
         <TextContainer>
           <Title>{item.albumName}</Title>
-          <Artist>{item.artist ? item.artist.artistName : "Unknown Artist"}</Artist>
+          <Artist>
+            {item.artist ? item.artist.artistName : "Unknown Artist"}
+          </Artist>
+          <Price>₱{item.albumPrice.toFixed(2)}</Price>
         </TextContainer>
         <Info>
           <Icon>
