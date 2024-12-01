@@ -68,16 +68,30 @@ export default function NewAlbum() {
     try {
       const response = await axios.post('/musictest/album/add', album);
       if (response.status === 200) {
-        alert('Album created successfully.');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Album created successfully.',
+          showConfirmButton: false,
+          timer: 1500
+        });
       } else {
-        alert('Error creating album.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Error creating album.'
+        });
       }
     } catch (err) {
       console.error('Error creating album', err);
       if (err.response) {
         console.error('Response data:', err.response.data);
       }
-      alert('An error occurred. Please try again.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'An error occurred. Please try again.'
+      });
     }
   };
 
