@@ -47,10 +47,10 @@ const SearchContainer = styled.div`
 const Input = styled(InputBase)`
   border: none;
   width: 100%;
-  color: #eff1f4;
+  color: white;
 
   &::placeholder {
-    color: #fffff;
+    color: white;
   }
 `;
 
@@ -117,6 +117,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                   placeholder="Search"
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
+                  style={{ color: "white" }}
                 />
                 <button
                   type="submit"
@@ -124,6 +125,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                     background: "none",
                     border: "none",
                     cursor: "pointer",
+                  
                   }}
                 >
                   <Search style={{ color: "white", fontSize: 16 }} />
