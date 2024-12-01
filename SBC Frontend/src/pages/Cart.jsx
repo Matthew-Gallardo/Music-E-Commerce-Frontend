@@ -265,6 +265,7 @@ const Cart = () => {
         <TopButton type="filled" onClick={handleCheckout}>
           CHECKOUT NOW
         </TopButton>
+     
       </Top>
       <Bottom>
         <Info>

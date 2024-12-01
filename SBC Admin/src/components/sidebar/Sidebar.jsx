@@ -1,14 +1,11 @@
 import "./sidebar.css";
 import {
-  LineStyle,
-  Timeline,
-  TrendingUp,
+  HomeOutlined,
   PermIdentity,
   MailOutline,
   DynamicFeed,
   ChatBubbleOutline,
-  WorkOutline,
-  Report,
+  TheaterComedyOutlined,
   ShoppingCartOutlined,
   AttachMoneyOutlined,
   AlbumOutlined,
@@ -26,18 +23,10 @@ export default function Sidebar() {
           <ul className="sidebarList">
             <Link to="/" className="link">
             <li className="sidebarListItem active">
-              <LineStyle className="sidebarIcon" />
+              <HomeOutlined className="sidebarIcon" />
               Home
             </li>
             </Link>
-            <li className="sidebarListItem">
-              <Timeline className="sidebarIcon" />
-              Analytics
-            </li>
-            <li className="sidebarListItem">
-              <TrendingUp className="sidebarIcon" />
-              Sales
-            </li>
           </ul>
         </div>
         <div className="sidebarMenu">
@@ -51,7 +40,7 @@ export default function Sidebar() {
             </Link>
             <Link to="/artist" className="link">
               <li className="sidebarListItem">
-                <MusicNoteOutlined className="sidebarIcon" />
+                <TheaterComedyOutlined className="sidebarIcon" />
                 Artist
               </li>
             </Link>
@@ -76,7 +65,7 @@ export default function Sidebar() {
             <Link to="/transactions" className="link">
             <li className="sidebarListItem">
               <AttachMoneyOutlined className="sidebarIcon" />
-              Orders
+              Transactions
             </li>
             </Link>
             <Link to="/carts" className="link">

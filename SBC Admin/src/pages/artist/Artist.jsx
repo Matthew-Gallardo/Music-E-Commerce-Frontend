@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import './Artist.css'; 
 
 const Artist = () => {
@@ -46,9 +47,19 @@ const Artist = () => {
         return response.json();
       })
       .then((data) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Artist updated successfully!',
+        });
         console.log('Artist updated successfully:', data);
       })
       .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error updating artist. Please try again.',
+        });
         console.error('Error updating artist:', error);
       });
   };

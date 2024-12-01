@@ -38,7 +38,7 @@
 }
 
 .transactionCreateButton {
-  background-color: darkblue; 
+  background-color: teal; 
   border: none; 
   color: white; 
   padding: 10px 20px; 
@@ -52,5 +52,5 @@
 }
 
 .transactionCreateButton:hover {
-  background-color: blue; 
+  background-color: rgb(11, 181, 181); 
 }

@@ -83,6 +83,7 @@ export default function CartList() {
 
   return (
     <div className="cartList">
+      <h1>Manage Carts</h1>
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid rows={rows} columns={columns} pageSize={5} />
       </div>

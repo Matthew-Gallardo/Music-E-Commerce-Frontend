@@ -1,6 +1,7 @@
 import { Send } from "@mui/icons-material";
 import styled from "styled-components";
-
+import Swal from "sweetalert2";
+import { useState } from "react";
 
 const Container = styled.div`
   height: 40vh;
@@ -46,13 +47,37 @@ const Button = styled.button`
 `;
 
 const Newsletter = () => {
+  const [email, setEmail] = useState("");
+
+  const handleClick = () => {
+    if (email) {
+      Swal.fire({
+        title: 'Success!',
+        text: 'You have been subscribed to the newsletter.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Please enter a valid email address.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+  };
+
   return (
     <Container>
       <Title>You deserve better</Title>
       <Desc>Get updates on our products, promos, events and more!</Desc>
       <InputContainer>
-        <Input placeholder="Your email" />
-        <Button>
+        <Input 
+          placeholder="Your email" 
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Button onClick={handleClick}>
           <Send />
         </Button>
       </InputContainer>

@@ -87,28 +87,28 @@ export default function NewAlbum() {
       <form className="addProductForm" onSubmit={handleSubmit}>
         <div className="addProductItem">
           <label>Image</label>
-          <input type="file" id="file" onChange={handleFileChange} />
+          <input type="file" id="file" onChange={handleFileChange} required />
           {album.albumImage && <img src={album.albumImage} alt="Album" className="productUploadImg" />}
         </div>
         <div className="addProductItem">
           <label>Name</label>
-          <input type="text" name="albumName" placeholder="Album Name" value={album.albumName} onChange={handleChange} />
+          <input type="text" name="albumName" placeholder="Album Name" value={album.albumName} onChange={handleChange} required />
         </div>
         <div className="addProductItem">
           <label>Desc</label>
-          <input type="text" name="albumDesc" placeholder="Album Description" value={album.albumDesc} onChange={handleChange} />
+          <input type="text" name="albumDesc" placeholder="Album Description" value={album.albumDesc} onChange={handleChange} required />
         </div>
         <div className="addProductItem">
           <label>Price</label>
-          <input type="number" name="albumPrice" placeholder="Album Price" value={album.albumPrice} onChange={handleChange} />
+          <input type="number" name="albumPrice" placeholder="Album Price" value={album.albumPrice} onChange={handleChange} required />
         </div>
         <div className="addProductItem">
           <label>Quantity</label>
-          <input type="number" name="albumQty" placeholder="Album Quantity" value={album.albumQty} onChange={handleChange} />
+          <input type="number" name="albumQty" placeholder="Album Quantity" value={album.albumQty} onChange={handleChange} required />
         </div>
         <div className="addProductItem">
           <label>Artist</label>
-          <select name="artistId" value={album.artistId} onChange={handleChange}>
+          <select name="artistId" value={album.artistId} onChange={handleChange} required>
             <option value="">Select Artist</option>
             {artists.map(artist => (
               <option key={artist.artistId} value={artist.artistId}>{artist.artistName}</option>
@@ -117,7 +117,7 @@ export default function NewAlbum() {
         </div>
         <div className="addProductItem">
           <label>Genre</label>
-          <select name="genreId" value={album.genreId} onChange={handleChange}>
+          <select name="genreId" value={album.genreId} onChange={handleChange} required>
             <option value="">Select Genre</option>
             {genres.map(genre => (
               <option key={genre.genreId} value={genre.genreId}>{genre.genreName}</option>

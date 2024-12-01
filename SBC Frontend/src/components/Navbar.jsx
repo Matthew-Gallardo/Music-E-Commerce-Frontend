@@ -50,7 +50,7 @@ const Input = styled(InputBase)`
   color: #eff1f4;
 
   &::placeholder {
-    color: #eff1f4;
+    color: #fffff;
   }
 `;
 

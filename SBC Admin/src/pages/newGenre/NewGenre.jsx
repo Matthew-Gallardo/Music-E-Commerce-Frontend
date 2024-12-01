@@ -58,6 +58,7 @@ export default function NewGenre() {
             placeholder="Genre Name"
             value={genreName}
             onChange={(e) => setGenreName(e.target.value)}
+            required
           />
         </div>
         <div className="addProductItem">
@@ -67,6 +68,7 @@ export default function NewGenre() {
             placeholder="Genre Description"
             value={genreDesc}
             onChange={(e) => setGenreDesc(e.target.value)}
+            required
           />
         </div>
         <button className="addProductButton" type="submit">

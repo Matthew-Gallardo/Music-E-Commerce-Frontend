@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
 import "./genre.css";
-import { Publish } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 export default function Genre() {
   const { genreId } = useParams();
@@ -36,12 +35,25 @@ export default function Genre() {
       });
 
       if (response.ok) {
-        console.log("Genre updated successfully");
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Genre updated successfully!',
+        });
         navigate("/genre");
       } else {
-        console.error("Error updating genre");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error updating genre. Please try again.',
+        });
       }
     } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Error updating genre. Please try again.',
+      });
       console.error("Error updating genre:", error);
     }
   };
@@ -53,7 +65,6 @@ export default function Genre() {
       </div>
       <div className="genreTop">
         <div className="genreTopRight">
-
           <div className="genreInfoBottom">
             <div className="genreInfoItem">
               <span className="genreInfoKey">ID:</span>

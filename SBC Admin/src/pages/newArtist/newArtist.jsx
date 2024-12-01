@@ -38,7 +38,6 @@ export default function NewArtist() {
       .catch((error) => console.error("Error creating artist:", error));
   };
 
-
   return (
     <div className="newArtist">
       <h1 className="addArtistTitle">New Artist</h1>
@@ -50,6 +49,7 @@ export default function NewArtist() {
             placeholder="Artist Name"
             value={artistName}
             onChange={(e) => setArtistName(e.target.value)}
+            required
           />
         </div>
         <div className="addArtistItem">

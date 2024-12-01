@@ -44,7 +44,7 @@ export default function NewTrack() {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('upload_preset', 'sbcmusic'); 
-      formData.append('folder', 'sbcmusic/track/music'); 
+      formData.append('folder', 'sbcmusic/album/music'); 
 
       try {
         const response = await axios.post('https://api.cloudinary.com/v1_1/do3op0083/video/upload', formData);

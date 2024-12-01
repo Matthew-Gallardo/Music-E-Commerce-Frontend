@@ -1,10 +1,11 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from "react";
-
+import './transactionList.css';
 
 export default function TransactionList() {
   const [data, setData] = useState([]);
   const [userTransactions, setUserTransactions] = useState([]);
+  const [monthlySales, setMonthlySales] = useState([]);
 
   useEffect(() => {
     fetch("/musictest/api/transactions")
@@ -34,6 +35,24 @@ export default function TransactionList() {
           return acc;
         }, {});
         setUserTransactions(Object.values(userTransactionMap));
+
+        const monthlySalesMap = data.reduce((acc, transaction) => {
+          const date = new Date(transaction.transactionDate);
+          const month = date.getMonth() + 1; // getMonth() returns 0-11
+          const year = date.getFullYear();
+          const key = `${year}-${month.toString().padStart(2, '0')}`;
+          if (!acc[key]) {
+            acc[key] = {
+              month: key,
+              totalAmount: 0,
+              transactionCount: 0,
+            };
+          }
+          acc[key].totalAmount += transaction.transactionTotalAmount;
+          acc[key].transactionCount += 1;
+          return acc;
+        }, {});
+        setMonthlySales(Object.values(monthlySalesMap));
       })
       .catch((error) => console.error("Error fetching transaction data:", error));
   }, []);
@@ -61,6 +80,12 @@ export default function TransactionList() {
     { field: "userShippingAddress", headerName: "Shipping Address", width: 200 },
   ];
 
+  const monthlySalesColumns = [
+    { field: "month", headerName: "Month", width: 150 },
+    { field: "totalAmount", headerName: "Total Amount", width: 150 },
+    { field: "transactionCount", headerName: "Transaction Count", width: 150 },
+  ];
+
   const transactionRows = data.map((transaction, index) => ({
     id: index,
     transactionId: transaction.transactionId,
@@ -86,6 +111,13 @@ export default function TransactionList() {
     userShippingAddress: userTransaction.userShippingAddress,
   }));
 
+  const monthlySalesRows = monthlySales.map((sale, index) => ({
+    id: index,
+    month: sale.month,
+    totalAmount: sale.totalAmount.toFixed(2),
+    transactionCount: sale.transactionCount,
+  }));
+
   return (
     <div className="trackList">
       <div className="trackListHeader">
@@ -96,8 +128,12 @@ export default function TransactionList() {
         <DataGrid rows={transactionRows} columns={transactionColumns} pageSize={5} />
       </div>
       <h2>Total Transactions per User</h2>
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height: 400, width: '100%', marginBottom: '20px' }}>
         <DataGrid rows={userRows} columns={userColumns} pageSize={5} />
+      </div>
+      <h2>Monthly Sales</h2>
+      <div style={{ height: 400, width: '100%' }}>
+        <DataGrid rows={monthlySalesRows} columns={monthlySalesColumns} pageSize={5} />
       </div>
     </div>
   );

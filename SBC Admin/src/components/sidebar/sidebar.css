@@ -17,7 +17,7 @@
 
 .sidebarTitle {
   font-size: 13px;
-  color: rgb(187, 186, 186);
+  color: #151f31;
 }
 
 .sidebarList {
@@ -33,7 +33,6 @@
   border-radius: 10px;
 }
 
-.sidebarListItem.active,
 .sidebarListItem:hover {
   background-color: rgb(240, 240, 255);
 }

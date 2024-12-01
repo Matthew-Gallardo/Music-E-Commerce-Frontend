@@ -19,7 +19,7 @@
     border: none;
     border-radius: 10px;
     padding: 5px 10px;
-    background-color: #3bb077;
+    background-color: teal;
     color: white;
     cursor: pointer;
     margin-right: 20px;
@@ -30,10 +30,6 @@
     cursor: pointer;
 }
 
-
-
-/* artistList.css */
-
 .artistCreateButtonContainer {
   display: flex;
   justify-content: flex-end;
@@ -41,7 +37,7 @@
 }
 
 .artistCreateButton {
-  background-color: darkblue; 
+  background-color: teal; 
   border: none; 
   color: white; 
   padding: 10px 20px; 
@@ -55,5 +51,5 @@
 }
 
 .artistCreateButton:hover {
-  background-color: blue; 
+  background-color: rgb(91, 121, 48); 
 }
